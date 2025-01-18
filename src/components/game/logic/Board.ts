@@ -9,6 +9,7 @@ export interface Coordinates {
 
 export const initBlockCoordinates = { x: BOARD_WIDTH / 2, y: -2 }
 export interface Row {
+  id: string,
   cells: (BlockType | null)[]
 }
 
@@ -39,7 +40,16 @@ function cellAt(
  * Create a new board with all cells set to `null`, indicating empty
  */
 export function initialBoard(width: number, height: number): Board {
-  return { rows: Array(height).fill({ cells: Array(width).fill(null) }) }
+  return { rows: getEmptyRows(height, width) }
+}
+
+function getEmptyRows(num: number, width: number): Row[] {
+  const rows = Array(num)
+  for (let i = 0; i < num; i++) {
+    rows[i] = { id: crypto.randomUUID(), cells: Array(width).fill(null) }
+  }
+
+  return rows
 }
 
 /**
@@ -88,7 +98,8 @@ export function clearLines(board: Board): LineClearResult {
 
   if (rowIndicesToClear.length === 0) return { newBoard: board, rowIndicesCleared: [] }
 
-  const emptyRows = Array(rowIndicesToClear.length).fill({ cells: Array(board.rows[0].cells.length).fill(null) })
+  const emptyRows = getEmptyRows(rowIndicesToClear.length, board.rows[0].cells.length)
+
   const newRows = [ ...emptyRows, ...board.rows.filter((_, rowIndex) => {
     return !rowIndicesToClear.includes(rowIndex)
   })]
