@@ -7,6 +7,7 @@ export interface Coordinates {
   y: number // "up" (higher y) is closer to the bottom of the board, 0 is the top
 }
 
+export const initBlockCoordinates = { x: BOARD_WIDTH / 2, y: -2 }
 export interface Row {
   cells: (BlockType | null)[]
 }

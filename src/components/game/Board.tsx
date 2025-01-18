@@ -4,8 +4,6 @@ interface BoardProps {
   handleLineClear: () => void
 }
 
-const width = 10;
-const height = 20;
 const blockSideLenPx = 32 // TODO scale to display
 
 export default function Board({ fallingColorHex, landedColorHex, handleLineClear }: BoardProps) {
