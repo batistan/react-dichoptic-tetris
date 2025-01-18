@@ -1,5 +1,5 @@
 import {Block} from "../src/components/game/logic/Blocks";
-import {canPlaceBlock, Coordinates, initialBoard} from "../src/components/game/logic/Board";
+import {canPlaceBlock, clearLines, Coordinates, initialBoard} from "../src/components/game/logic/Board";
 
 describe("initialBoard tests", () => {
   test("initialBoard returns a list of rows each containing a list of null with the right dimensions", async () => {
@@ -56,5 +56,41 @@ describe("canPlaceBlock tests", () => {
 })
 
 describe("clearLines tests", () => {
+  const board = initialBoard(10, 20)
 
+  test("clearing single line returns an array with a single value and board with that row cleared", async () => {
+    const occupiedRow = { cells: Array(board.rows[0].cells.length).fill("T") }
+    const occupiedBoard = {
+      rows: [...Array(board.rows.length - 1).fill(
+        { cells: [...board.rows[0].cells ] }
+      ), occupiedRow]
+    }
+
+    const { newBoard, rowIndicesCleared } = clearLines(occupiedBoard)
+
+    expect(rowIndicesCleared.length).toBe(1)
+    expect(rowIndicesCleared[0]).toBe(19)
+    expect(newBoard.rows[rowIndicesCleared[0]].cells.find(c => c !== null)).toBeFalsy()
+  })
+
+  test("clearing multiple lines shifts all lines down to be adjacent", async () => {
+    const occupiedRowOne = { cells: Array(board.rows[0].cells.length).fill("T") }
+    const occupiedRowTwo = { cells: Array(board.rows[0].cells.length).fill("L") }
+
+    const partiallyOccupiedRow = { cells: ["T", ...Array(board.rows[0].cells.length - 1).fill(null)]}
+
+    const occupiedBoard = {
+      rows: [...Array(board.rows.length - 4).fill(
+        { cells: [...board.rows[0].cells ] }
+      ), partiallyOccupiedRow, occupiedRowOne, partiallyOccupiedRow, occupiedRowTwo]
+    }
+
+    const { newBoard, rowIndicesCleared } = clearLines(occupiedBoard)
+
+    expect(rowIndicesCleared.length).toBe(2)
+    expect(rowIndicesCleared[0]).toBe(17)
+    expect(rowIndicesCleared[1]).toBe(19)
+    expect(newBoard.rows[19]).toBe(partiallyOccupiedRow)
+    expect(newBoard.rows[18]).toBe(partiallyOccupiedRow)
+  })
 })

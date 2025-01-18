@@ -42,11 +42,12 @@ export function initialBoard(width: number, height: number): Board {
 }
 
 /**
- * Return true if the `block` can be placed on the `board` at position `position`
  *
  * @param block Block to check
  * @param position position on board to check
  * @param board board onto which we're trying to place the block
+ *
+ * @return `true` if the `block` can be placed on the `board` at position `position`, `false` otherwise
  */
 export function canPlaceBlock(block: Block, position: Coordinates, board: Board): boolean {
   const rotationArray = getBlockRotations(block)
@@ -64,5 +65,39 @@ export function canPlaceBlock(block: Block, position: Coordinates, board: Board)
         return cell === undefined || cell !== null
       } else return false
     }) !== undefined
+  }) === undefined
+}
+
+export interface LineClearResult {
+  newBoard: Board,
+  rowIndicesCleared: number[]
+}
+
+/**
+ *
+ * @param board
+ *
+ * @return `LineClearResult` containing the new `Board`, with filled lines cleared, and an array `rowIndicesCleared`
+ * indicating which lines were cleared
+ */
+export function clearLines(board: Board): LineClearResult {
+  const rowIndicesToClear = board.rows
+    .map((_, index) => index)
+    .filter(rowIndex => isRowFull(board.rows[rowIndex]))
+
+  if (rowIndicesToClear.length === 0) return { newBoard: board, rowIndicesCleared: [] }
+
+  const emptyRows = Array(rowIndicesToClear.length).fill({ cells: Array(board.rows[0].cells.length).fill(null) })
+  const newRows = [ ...emptyRows, ...board.rows.filter((_, rowIndex) => {
+    return !rowIndicesToClear.includes(rowIndex)
+  })]
+
+  return { newBoard: { rows: newRows }, rowIndicesCleared: rowIndicesToClear }
+}
+
+function isRowFull(row: Row): boolean {
+  // row is full if all its cells are non-null
+  return row.cells.find((cell) => {
+    return cell === null
   }) === undefined
 }
