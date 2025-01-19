@@ -1,18 +1,23 @@
 import Board from "./Board.tsx";
 import Info from "./Info.tsx";
-import {useState} from "react";
+import {useReducer} from "react";
+import {calculateLevel, getNextGameState, initialGameState} from "./logic/GameState.ts";
+import "./game.css"
 
 export default function Game({ fallingColorHex, landedColorHex }: { fallingColorHex: string; landedColorHex: string }) {
-  const [isGameOver, setIsGameOver] = useState<boolean>(false);
-  const [level, setLevel] = useState<number>(1);
-  const [score, setScore] = useState<number>(0);
+  const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
 
-  function handleLineClear() {
-    setScore(score);
-  }
+  console.log(`Game state ${JSON.stringify(gameState, null, 2)}`)
 
-  return (<div className="border-2 border-green-950 flex w-1/3">
-    <Board fallingColorHex={fallingColorHex} landedColorHex={landedColorHex} handleLineClear={handleLineClear} />
-    <Info nextBlock={"T"} blockColor={fallingColorHex} level={7} score={score}/>
+  return (<div id="game">
+    <Board gameState={gameState}
+           fallingColorHex={fallingColorHex}
+           landedColorHex={landedColorHex}
+    />
+    <Info blockColor={fallingColorHex}
+          nextBlocks={gameState.nextBlocks}
+          score={gameState.score}
+          level={calculateLevel(gameState.linesCleared)}
+    />
   </div>)
 }

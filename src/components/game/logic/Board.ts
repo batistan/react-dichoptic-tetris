@@ -1,4 +1,4 @@
-import {Block, BlockType, getBlockRotations} from "./Blocks.ts";
+import {Block, BlockType, getRotationArray} from "./Blocks.ts";
 
 export const BOARD_WIDTH = 10
 export const BOARD_HEIGHT = 22
@@ -61,7 +61,7 @@ function getEmptyRows(num: number, width: number): Row[] {
  * @return `true` if the `block` can be placed on the `board` at position `position`, `false` otherwise
  */
 export function canPlaceBlock(block: Block, position: Coordinates, board: Board): boolean {
-  const rotationArray = getBlockRotations(block)
+  const rotationArray = getRotationArray(block)
 
   // check each 1 in the rotation array, get its position on the board, return false if that cell is non-empty
   return rotationArray.find((row, rowIndex) => {

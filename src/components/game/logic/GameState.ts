@@ -18,7 +18,7 @@ export interface GameState {
   score: number,
   linesCleared: number,
   canHold: boolean,
-  isStarted: true,
+  isStarted: boolean,
   isOver: boolean
   isPaused: boolean,
 }
@@ -33,7 +33,7 @@ export function initialGameState(): GameState {
     canHold: true,
     linesCleared: 0,
     score: 0,
-    isStarted: true,
+    isStarted: false,
     isOver: false,
     isPaused: false
   }
@@ -43,6 +43,7 @@ export type GameStateAction =
   "TICK" |
   "PAUSE" |
   "RESUME" |
+  "RESTART" |
   "MOVE_LEFT" |
   "MOVE_RIGHT" |
   "MOVE_DOWN" |
@@ -58,6 +59,8 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
       return {...prevState, isPaused: true};
     case "RESUME":
       return {...prevState, isPaused: false};
+    case "RESTART":
+      return initialGameState()
     case "MOVE_LEFT": {
       const newPosition = {x: prevState.currentBlockPosition.x - 1, y: prevState.currentBlockPosition.y};
       if (canPlaceBlock(currentBlock, prevState.currentBlockPosition, prevState.board)) {

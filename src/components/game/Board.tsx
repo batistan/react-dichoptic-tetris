@@ -1,14 +1,12 @@
-import {useReducer} from "react";
-import {getNextGameState, initialGameState} from "./logic/GameState.ts";
+import {GameState} from "./logic/GameState.ts";
 
 interface BoardProps {
+  gameState: GameState,
   fallingColorHex: string,
   landedColorHex: string,
-  handleLineClear: () => void
 }
 
-export default function Board({ fallingColorHex, landedColorHex }: BoardProps) {
-  const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
+export default function Board({ gameState, fallingColorHex, landedColorHex }: BoardProps) {
 
   const board = gameState.board
   return <div className="w-full rounded-b-md rounded-l-md grid">

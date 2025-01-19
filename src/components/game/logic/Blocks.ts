@@ -32,7 +32,7 @@ export const isRotation = (num: number): num is Rotation =>
 // the "correct" way to do this is with actual rotations, modeling your block as existing in a 2d plane and computing
 // the new coordinates as a rotation about the "origin" of each block, but that's a lot more work than needed
 // when there's a dichoptic tetris tournament or something I'll eat these words
-export const getBlockRotations = (block: Block): RotationArray => {
+export const getRotationArray = (block: Block): RotationArray => {
   switch (block.shape) {
     case 'I':
       return [
