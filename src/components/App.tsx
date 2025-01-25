@@ -11,7 +11,7 @@ function App() {
 
   return (<>
       <Header />
-      <div className="flex bg-background text-text align-middle justify-between">
+      <div>
         <ColorSelection
           fallingColor={fallingColor}
           landedColor={landedColor}

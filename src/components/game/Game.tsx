@@ -11,7 +11,7 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
     setScore(score);
   }
 
-  return (<div className="border-2 border-green-950 flex w-1/3">
+  return (<div>
     <Board fallingColorHex={fallingColorHex} landedColorHex={landedColorHex} handleLineClear={handleLineClear} />
     <Info nextBlock={"T"} blockColor={fallingColorHex} level={7} score={score}/>
   </div>)

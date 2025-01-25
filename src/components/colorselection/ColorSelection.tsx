@@ -24,9 +24,9 @@ export default function ColorSelection({ fallingColor, landedColor, handleFallin
     handleLandedColorChange(fallingColor)
   }
 
-  return <div className="color-selection">
-    <div className="flex justify-between">
-      <div className="flex-col">
+  return <div>
+    <div>
+      <div>
         <p>Falling Block Color</p>
         <ColorPickerWithSwatches
           color={fallingColor}
@@ -34,7 +34,7 @@ export default function ColorSelection({ fallingColor, landedColor, handleFallin
           onChangeColor={handleFallingColorChange}
         />
       </div>
-      <div className="flex-col">
+      <div>
         <p>Landed Block Color</p>
         <ColorPickerWithSwatches
           color={landedColor}
@@ -44,7 +44,6 @@ export default function ColorSelection({ fallingColor, landedColor, handleFallin
       </div>
     </div>
     <button
-      className="bg-sky-200 text-sky-900 rounded-md w-fit px-2 hover:bg-sky-300"
       onClick={handleSwap}>
       ⇔ Swap
     </button>
