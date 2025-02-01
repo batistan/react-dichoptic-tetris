@@ -6,10 +6,21 @@ export type Block = {
 }
 
 export type Rotation = 0 | 1 | 2 | 3;
+export enum RotationDirection {
+  CLOCKWISE = 1,
+  ANTI_CLOCKWISE = -1
+}
 export type RotationArray = number[][]
 
-export function randomBlockType(
-  randomNumberFn: () => number
+export function rotateBlock(
+  block: Block,
+  direction: RotationDirection
+): Block {
+  return { ...block, rotation: ((block.rotation + direction) % 4) as Rotation }
+}
+
+export function randomBlock(
+  randomNumberFn: () => number = Math.random
 ): Block {
   return { shape: blockTypes[Math.floor(randomNumberFn() * blockTypes.length)], rotation: 0 }
 }
@@ -21,7 +32,7 @@ export const isRotation = (num: number): num is Rotation =>
 // the "correct" way to do this is with actual rotations, modeling your block as existing in a 2d plane and computing
 // the new coordinates as a rotation about the "origin" of each block, but that's a lot more work than needed
 // when there's a dichoptic tetris tournament or something I'll eat these words
-export const getBlockRotations = (block: Block): RotationArray => {
+export const getRotationArray = (block: Block): RotationArray => {
   switch (block.shape) {
     case 'I':
       return [

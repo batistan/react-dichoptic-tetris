@@ -1,4 +1,4 @@
-import {Block, BlockType, getBlockRotations} from "./Blocks.ts";
+import {Block, BlockType, getRotationArray} from "./Blocks.ts";
 
 export const BOARD_WIDTH = 10
 export const BOARD_HEIGHT = 22
@@ -7,7 +7,9 @@ export interface Coordinates {
   y: number // "up" (higher y) is closer to the bottom of the board, 0 is the top
 }
 
+export const initBlockCoordinates = { x: BOARD_WIDTH / 2, y: -2 }
 export interface Row {
+  id: string,
   cells: (BlockType | null)[]
 }
 
@@ -38,7 +40,16 @@ function cellAt(
  * Create a new board with all cells set to `null`, indicating empty
  */
 export function initialBoard(width: number, height: number): Board {
-  return { rows: Array(height).fill({ cells: Array(width).fill(null) }) }
+  return { rows: getEmptyRows(height, width) }
+}
+
+function getEmptyRows(num: number, width: number): Row[] {
+  const rows = Array(num)
+  for (let i = 0; i < num; i++) {
+    rows[i] = { id: crypto.randomUUID(), cells: Array(width).fill(null) }
+  }
+
+  return rows
 }
 
 /**
@@ -50,7 +61,7 @@ export function initialBoard(width: number, height: number): Board {
  * @return `true` if the `block` can be placed on the `board` at position `position`, `false` otherwise
  */
 export function canPlaceBlock(block: Block, position: Coordinates, board: Board): boolean {
-  const rotationArray = getBlockRotations(block)
+  const rotationArray = getRotationArray(block)
 
   // check each 1 in the rotation array, get its position on the board, return false if that cell is non-empty
   return rotationArray.find((row, rowIndex) => {
@@ -87,7 +98,8 @@ export function clearLines(board: Board): LineClearResult {
 
   if (rowIndicesToClear.length === 0) return { newBoard: board, rowIndicesCleared: [] }
 
-  const emptyRows = Array(rowIndicesToClear.length).fill({ cells: Array(board.rows[0].cells.length).fill(null) })
+  const emptyRows = getEmptyRows(rowIndicesToClear.length, board.rows[0].cells.length)
+
   const newRows = [ ...emptyRows, ...board.rows.filter((_, rowIndex) => {
     return !rowIndicesToClear.includes(rowIndex)
   })]
