@@ -1,0 +1,12 @@
+#game {
+    width: 66.6666%;
+    border: 2px green solid;
+}
+
+#next-blocks {
+
+}
+
+.next-block:nth-child(n + 1) {
+    visibility: hidden;
+}

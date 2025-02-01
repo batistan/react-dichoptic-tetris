@@ -9,7 +9,7 @@ function App() {
   const [landedColor, setLandedColor] = useState<string>(blueSwatches[blueSwatches.length / 2])
 
   return (
-    <div className="flex align-middle justify-between">
+    <div className="mx-1 h-full flex gap-2 items-center justify-between border-2 border-indigo-50">
       <ColorSelection
         fallingColor={fallingColor}
         landedColor={landedColor}
