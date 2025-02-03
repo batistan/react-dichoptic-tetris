@@ -39,53 +39,54 @@ export function initialGameState(): GameState {
   }
 }
 
-export type GameStateAction =
-  "TICK" |
-  "PAUSE" |
-  "RESUME" |
-  "RESTART" |
-  "MOVE_LEFT" |
-  "MOVE_RIGHT" |
-  "MOVE_DOWN" |
-  "ROTATE_CLOCKWISE" |
-  "ROTATE_ANTI_CLOCKWISE" |
-  "HARD_DROP" |
-  "HOLD"
+export enum GameStateAction {
+  TICK = "TICK",
+  PAUSE = "PAUSE",
+  RESUME = "RESUME",
+  RESTART = "RESTART",
+  MOVE_LEFT = "MOVE_LEFT",
+  MOVE_RIGHT = "MOVE_RIGHT",
+  MOVE_DOWN = "MOVE_DOWN",
+  ROTATE_CLOCKWISE = "ROTATE_CLOCKWISE",
+  ROTATE_ANTI_CLOCKWISE = "ROTATE_ANTI_CLOCKWISE",
+  HARD_DROP = "HARD_DROP",
+  HOLD = "HOLD"
+}
 
 export function getNextGameState(prevState: GameState, action: GameStateAction): GameState {
   const currentBlock = prevState.nextBlocks[0]
   switch (action) {
-    case "PAUSE":
+    case GameStateAction.PAUSE:
       return {...prevState, isPaused: true};
-    case "RESUME":
+    case GameStateAction.RESUME:
       return {...prevState, isPaused: false};
-    case "RESTART":
+    case GameStateAction.RESTART:
       return initialGameState()
-    case "MOVE_LEFT": {
+    case GameStateAction.MOVE_LEFT: {
       const newPosition = {x: prevState.currentBlockPosition.x - 1, y: prevState.currentBlockPosition.y};
       if (canPlaceBlock(currentBlock, prevState.currentBlockPosition, prevState.board)) {
         return {...prevState, currentBlockPosition: newPosition};
       } else return prevState;
     }
-    case "MOVE_RIGHT": {
+    case GameStateAction.MOVE_RIGHT: {
       const newPosition = {x: prevState.currentBlockPosition.x + 1, y: prevState.currentBlockPosition.y};
       if (canPlaceBlock(currentBlock, prevState.currentBlockPosition, prevState.board)) {
         return {...prevState, currentBlockPosition: newPosition};
       } else return prevState;
     }
-    case "ROTATE_CLOCKWISE": {
+    case GameStateAction.ROTATE_CLOCKWISE: {
       const rotated = rotateBlock(currentBlock, RotationDirection.CLOCKWISE)
       if (canPlaceBlock(rotated, prevState.currentBlockPosition, prevState.board)) {
         return {...prevState, nextBlocks: [rotated, ...prevState.nextBlocks.slice(1)]};
       } else return prevState;
     }
-    case "ROTATE_ANTI_CLOCKWISE": {
+    case GameStateAction.ROTATE_ANTI_CLOCKWISE: {
       const rotated = rotateBlock(currentBlock, RotationDirection.ANTI_CLOCKWISE)
       if (canPlaceBlock(rotated, prevState.currentBlockPosition, prevState.board)) {
         return {...prevState, nextBlocks: [rotated, ...prevState.nextBlocks.slice(1)]};
       } else return prevState;
     }
-    case "HOLD": {
+    case GameStateAction.HOLD: {
       if (!prevState.canHold) return prevState
       if (prevState.heldBlock == null) {
         return {
@@ -100,10 +101,10 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
         canHold: false
       }
     }
-    case "HARD_DROP":
+    case GameStateAction.HARD_DROP:
       return prevState
-    case "MOVE_DOWN":
-    case "TICK": {
+    case GameStateAction.MOVE_DOWN:
+    case GameStateAction.TICK: {
       const newPosition = { x: prevState.currentBlockPosition.x, y: prevState.currentBlockPosition.y + 1 }
 
       if (canPlaceBlock(currentBlock, newPosition, prevState.board)) {

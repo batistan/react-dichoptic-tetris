@@ -11,12 +11,12 @@ interface InfoProps {
 
 export default function Info({nextBlocks, blockColor, score, level}: InfoProps) {
 
-  return <div className="flex-row">
+  return <div className="flex flex-col w-32 bg-board rounded-r-md">
     <NextBlocks blocks={nextBlocks} color={blockColor} />
-    <div className="bg-gray-300 w-1/3 h-2/3 flex flex-col contain-content justify-center rounded-r-md">
-    <InfoBox label={"Level"} value={level} />
-    <InfoBox label={"Score"} value={score} />
-    {/*<InfoBox label={"High Score"} value={hiScore} />*/}
-  </div>
+    <div>
+      <InfoBox label={"Level"} value={level} />
+      <InfoBox label={"Score"} value={score} />
+      {/*<InfoBox label={"High Score"} value={hiScore} />*/}
+    </div>
   </div>
 }

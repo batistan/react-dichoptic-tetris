@@ -7,6 +7,14 @@ import "./game.css"
 export default function Game({ fallingColorHex, landedColorHex }: { fallingColorHex: string; landedColorHex: string }) {
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     dispatch(GameStateAction.TICK)
+  //   }, 1000)
+  //
+  //   return () => clearInterval(interval)
+  // }, [])
+
   return (<div id="game">
     <Board gameState={gameState}
            fallingColorHex={fallingColorHex}

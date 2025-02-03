@@ -1,6 +1,8 @@
 #game {
-    width: 66.6666%;
-    border: 2px green solid;
+    /*width: 66.6666%;*/
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 #next-blocks {
@@ -9,4 +11,19 @@
 
 .next-block:nth-child(n + 1) {
     visibility: hidden;
+}
+
+.board {
+
+}
+
+.cell {
+    display: inline;
+    width: 10%;
+    max-width: 3vh;
+    aspect-ratio: 1 / 1;
+}
+
+.cell:hover {
+    backdrop-filter: brightness(1.4);
 }

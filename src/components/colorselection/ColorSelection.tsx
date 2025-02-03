@@ -24,9 +24,9 @@ export default function ColorSelection({ fallingColor, landedColor, handleFallin
     handleLandedColorChange(fallingColor)
   }
 
-  return <div id="color-selection">
-    <div className="flex-row justify-between gap-2">
-      <div className="flex-col">
+  return <div id="color-selection" className="flex flex-col order-1 md:-order-1">
+    <div className="flex flex-col md:flex-row justify-around gap-2">
+      <div className="flex flex-col">
         <p>Falling Block Color</p>
         <ColorPickerWithSwatches
           color={fallingColor}

@@ -23,7 +23,7 @@ export default function ColorPickerWithSwatches({color, onChangeColor, swatches}
         />
       })}
     </div>
-    <div>
+    <div className="flex flex-row gap-2">
       <div style={{background: color}}/><p>{color}</p>
     </div>
   </div>

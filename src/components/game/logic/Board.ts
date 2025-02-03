@@ -26,7 +26,7 @@ function cellAt(
 ): (BlockType | null) | undefined {
   if (
     position.x < 0 ||
-    position.y < -2 ||
+    position.y < 0 ||
     position.y > board.rows.length - 1 ||
     position.x > board.rows[0].cells.length - 1
   ) {
