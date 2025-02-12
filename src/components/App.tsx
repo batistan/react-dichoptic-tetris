@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <Header />
-      <div className="bg-background text-text h-full flex gap-2 flex-col md:flex-row md:align-middle items-center border-2">
+      <div className="bg-background text-text h-full flex gap-2 flex-col md:flex-row md:align-middle md:justify-center items-center">
         <ColorSelection
           fallingColor={fallingColor}
           landedColor={landedColor}

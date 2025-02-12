@@ -11,10 +11,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body > div {
-  border: 2px solid red;
-}
-
 body * {
   @apply transition-colors duration-75 transform;
 }
@@ -22,7 +18,6 @@ body * {
 body {
   display: flex;
   justify-content: start;
-  border: 2px solid red;
 }
 
 a {
@@ -67,12 +62,14 @@ h1 {
     --color-bg: #e5e7eb;
     --color-text: #374151;
     --color-board: #111827;
+    --color-info: #686868;
   }
 
   :root[class~="dark"] {
     --color-bg: #111827;
     --color-text: #e5e7eb;
     --color-board: #9ca3af;
+    --color-info: #686868;
   }
 }
 

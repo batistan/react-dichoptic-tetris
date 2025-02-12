@@ -10,6 +10,7 @@ export default {
       background: "var(--color-bg)",
       text: "var(--color-text)",
       board: "var(--color-board)",
+      info: "var(--color-info)"
     }
   },
   plugins: [],

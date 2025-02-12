@@ -6,7 +6,7 @@ export default function NextBlocks({blocks, color}: {blocks: Block[], color: str
     <div className="rounded-md flex flex-col align-middle gap-5">
       { blocks.map(block => {
         const rotationArray = getRotationArray(block);
-        return <div className="bg-board p-3" key={crypto.randomUUID()}>
+        return <div className="bg-board p-3 rounded-md" key={crypto.randomUUID()}>
           { rotationArray.map((row) => {
             return <div className="flex flex-row" key={crypto.randomUUID()}>
               {

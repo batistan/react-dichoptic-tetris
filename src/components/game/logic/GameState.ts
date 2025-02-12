@@ -97,7 +97,8 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
         }
       } else return {
         ...prevState,
-        nextBlocks: [...prevState.nextBlocks.slice(1), randomBlock()],
+        nextBlocks: [prevState.heldBlock, ...prevState.nextBlocks.slice(1)],
+        heldBlock: currentBlock,
         canHold: false
       }
     }

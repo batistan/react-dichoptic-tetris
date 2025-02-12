@@ -11,7 +11,7 @@ interface InfoProps {
 
 export default function Info({nextBlocks, blockColor, score, level}: InfoProps) {
 
-  return <div className="flex flex-col w-32 bg-board rounded-r-md">
+  return <div className="flex flex-col w-32 bg-info rounded-r-md">
     <NextBlocks blocks={nextBlocks} color={blockColor} />
     <div>
       <InfoBox label={"Level"} value={level} />
