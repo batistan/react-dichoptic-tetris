@@ -18,7 +18,7 @@ export interface Board {
 }
 
 /**
- * Return cell on `board` at `position`, or `undefined` if not exists
+ * Return cell (null if empty) on `board` at `position`, or `undefined` if not exists
  */
 function cellAt(
   board: Board,
@@ -26,13 +26,15 @@ function cellAt(
 ): (BlockType | null) | undefined {
   if (
     position.x < 0 ||
-    position.y < 0 ||
+    position.y < -2 || // allow blocks to fall in from above board
     position.y > board.rows.length - 1 ||
     position.x > board.rows[0].cells.length - 1
   ) {
     return undefined
   } else {
-    return board.rows[position.y].cells[position.x]
+    if (position.y < 0 ) {
+      return null
+    } else return board.rows[position.y].cells[position.x]
   }
 }
 
@@ -79,8 +81,32 @@ export function canPlaceBlock(block: Block, position: Coordinates, board: Board)
   }) === undefined
 }
 
+export function placeBlock(block: Block, position: Coordinates, board: Board): Board {
+  const rotationArray = getRotationArray(block)
+
+  const newRows = board.rows.map((row, rowIndex) => {
+    const rotationRow = rowIndex - position.y
+    if (rotationRow < 0 || rotationRow > rotationArray.length - 1) {
+      return row
+    } else {
+      return { ...row, cells: row.cells.map((cell, colIndex) => {
+          const rotationCol = colIndex - position.x
+
+          if (rotationCol < 0 || rotationCol > rotationArray[rotationRow].length - 1) {
+            return cell
+          } else {
+            return rotationArray[rotationRow][rotationCol] === 1 ? block.shape : null
+          }
+        })
+      }
+    }
+  })
+
+  return { ...board, rows: [...newRows] }
+}
+
 export interface LineClearResult {
-  newBoard: Board,
+  clearedBoard: Board,
   rowIndicesCleared: number[]
 }
 
@@ -96,7 +122,7 @@ export function clearLines(board: Board): LineClearResult {
     .map((_, index) => index)
     .filter(rowIndex => isRowFull(board.rows[rowIndex]))
 
-  if (rowIndicesToClear.length === 0) return { newBoard: board, rowIndicesCleared: [] }
+  if (rowIndicesToClear.length === 0) return { clearedBoard: board, rowIndicesCleared: [] }
 
   const emptyRows = getEmptyRows(rowIndicesToClear.length, board.rows[0].cells.length)
 
@@ -104,7 +130,7 @@ export function clearLines(board: Board): LineClearResult {
     return !rowIndicesToClear.includes(rowIndex)
   })]
 
-  return { newBoard: { rows: newRows }, rowIndicesCleared: rowIndicesToClear }
+  return { clearedBoard: { rows: newRows }, rowIndicesCleared: rowIndicesToClear }
 }
 
 function isRowFull(row: Row): boolean {

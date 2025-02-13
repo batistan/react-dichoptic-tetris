@@ -6,7 +6,7 @@ import {
   clearLines,
   Coordinates,
   initBlockCoordinates,
-  initialBoard
+  initialBoard, placeBlock
 } from "./Board.ts";
 import {Block, randomBlock, rotateBlock, RotationDirection} from "./Blocks.ts";
 
@@ -115,18 +115,22 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
         }
       } else {
         // land block
-        const { newBoard, rowIndicesCleared } = clearLines(prevState.board)
+        console.log("Landing block")
+        const newBoard = placeBlock(currentBlock, prevState.currentBlockPosition, prevState.board)
+        const { clearedBoard, rowIndicesCleared } = clearLines(newBoard)
         let scoreToAdd = 0
         if (rowIndicesCleared.length > 0) {
           scoreToAdd += calculateScore(rowIndicesCleared.length, prevState.linesCleared)
         }
         const nextBlock = prevState.nextBlocks[1]
-        const gameIsOver = !canPlaceBlock(nextBlock, initBlockCoordinates, newBoard)
+        const gameIsOver = !canPlaceBlock(nextBlock, initBlockCoordinates, clearedBoard)
+        console.log(gameIsOver)
 
         return {
           ...prevState,
-          board: newBoard,
-          score: prevState.score + scoreToAdd + ((action === "MOVE_DOWN") ? 1 : 0),
+          nextBlocks: [...prevState.nextBlocks.slice(1), randomBlock()],
+          board: clearedBoard,
+          score: prevState.score + (scoreToAdd * (action === "MOVE_DOWN" ? 1 : 0)),
           linesCleared: prevState.linesCleared + rowIndicesCleared.length,
           currentBlockPosition: initBlockCoordinates,
           isOver: gameIsOver
