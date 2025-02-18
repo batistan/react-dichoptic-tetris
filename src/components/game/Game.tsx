@@ -8,11 +8,10 @@ import useKeyboardControls from "./useKeyboardControls.ts";
 export default function Game({ fallingColorHex, landedColorHex }: { fallingColorHex: string; landedColorHex: string }) {
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const boardRef = useRef<Element>(null);
 
   const { isOver, isPaused } = gameState;
 
-  useKeyboardControls(boardRef, dispatch)
+  useKeyboardControls(dispatch)
 
   useEffect(() => {
     if (!isOver && !isPaused) {
@@ -28,7 +27,6 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
 
   return (<div id="game">
     <Board
-      ref={boardRef}
       gameState={gameState}
       fallingColorHex={fallingColorHex}
       landedColorHex={landedColorHex}

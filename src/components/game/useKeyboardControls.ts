@@ -1,5 +1,5 @@
 import {GameStateAction} from "./logic/GameState.ts";
-import {Dispatch, RefObject, useState, SyntheticEvent, useEffect} from "react";
+import {Dispatch, useEffect} from "react";
 
 export function handleKeyDown(
   event: KeyboardEvent,
@@ -38,25 +38,17 @@ export function handleKeyDown(
   }
 }
 
-export type UseKeyboardControlsCleanupCallback = () => void;
-
 export default function useKeyboardControls(
-  ref: RefObject<Element>,
   dispatch: Dispatch<GameStateAction>
 ): void {
   useEffect(() => {
-    if (!ref.current) { return () => {} }
-
-    const eventHandler = (event) => {
+    const eventHandler = (event: KeyboardEvent) => {
       event.preventDefault()
-      if (event instanceof KeyboardEvent) {
-        handleKeyDown(event, dispatch)
-      }
+      handleKeyDown(event, dispatch)
     }
 
-    ref.current.addEventListener("keydown", eventHandler)
-    console.log("Added handler")
+    window.addEventListener("keydown", eventHandler)
 
-    return () => { if (ref.current) ref.current.removeEventListener("keydown", eventHandler) }
-  }, [ref, dispatch]);
+    return () => { window.removeEventListener("keydown", eventHandler) }
+  }, [dispatch]);
 }
