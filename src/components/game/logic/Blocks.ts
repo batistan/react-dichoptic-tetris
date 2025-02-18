@@ -12,11 +12,15 @@ export enum RotationDirection {
 }
 export type RotationArray = number[][]
 
+function mod(n: number, m: number): number {
+  return ((n % m) + m) % m;
+}
+
 export function rotateBlock(
   block: Block,
   direction: RotationDirection
 ): Block {
-  return { ...block, rotation: ((block.rotation + direction) % 4) as Rotation }
+  return { ...block, rotation: mod(block.rotation + direction, 4) as Rotation }
 }
 
 export function randomBlock(
@@ -44,15 +48,15 @@ export const getRotationArray = (block: Block): RotationArray => {
         ],
         [
           [0, 0, 0, 0],
-          [1, 1, 1, 1],
           [0, 0, 0, 0],
+          [1, 1, 1, 1],
           [0, 0, 0, 0]
         ],
         [
-          [0, 0, 1, 0],
-          [0, 0, 1, 0],
-          [0, 0, 1, 0],
-          [0, 0, 1, 0]
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0]
         ],
         [
           [0, 0, 0, 0],
@@ -99,8 +103,8 @@ export const getRotationArray = (block: Block): RotationArray => {
         [
           [0, 0, 0, 0],
           [0, 0, 0, 0],
-          [0, 0, 1, 0],
-          [1, 1, 1, 0]
+          [1, 1, 1, 0],
+          [1, 0, 0, 0]
         ],
         [
           [0, 0, 0, 0],
@@ -111,8 +115,8 @@ export const getRotationArray = (block: Block): RotationArray => {
         [
           [0, 0, 0, 0],
           [0, 0, 0, 0],
-          [1, 1, 1, 0],
-          [0, 0, 1, 0]
+          [0, 0, 1, 0],
+          [1, 1, 1, 0]
         ]
       ][block.rotation];
     case 'O':
@@ -164,9 +168,9 @@ export const getRotationArray = (block: Block): RotationArray => {
         ],
         [
           [0, 0, 0, 0],
-          [0, 1, 0, 0],
-          [0, 1, 1, 0],
-          [0, 0, 1, 0]
+          [1, 0, 0, 0],
+          [1, 1, 0, 0],
+          [0, 1, 0, 0]
         ]
       ][block.rotation];
     case 'Z':
@@ -200,27 +204,27 @@ export const getRotationArray = (block: Block): RotationArray => {
       return [
         [
           [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 1, 0, 0],
-          [1, 1, 1, 0]
-        ],
-        [
-          [0, 1, 0, 0],
-          [1, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
           [0, 1, 0, 0],
           [1, 1, 1, 0],
-          [0, 0, 0, 0],
           [0, 0, 0, 0]
         ],
         [
+          [0, 0, 0, 0],
           [0, 1, 0, 0],
           [0, 1, 1, 0],
+          [0, 1, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [1, 1, 1, 0],
+          [0, 1, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
           [0, 1, 0, 0],
-          [0, 0, 0, 0]
+          [1, 1, 0, 0],
+          [0, 1, 0, 0]
         ]
       ][block.rotation];
     default: {

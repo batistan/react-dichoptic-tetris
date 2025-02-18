@@ -1,6 +1,7 @@
 import {GameState} from "./logic/GameState.ts";
 import {getRotationArray, RotationArray} from "./logic/Blocks.ts";
 import {Coordinates} from "./logic/Board.ts";
+import {forwardRef} from "react";
 
 interface BoardProps {
   gameState: GameState,
@@ -23,12 +24,12 @@ function rotationArrayValue(
   return rotationArray[rotationRow][rotationCol];
 }
 
-export default function Board({ gameState, fallingColorHex, landedColorHex }: BoardProps) {
+const Board = forwardRef<HTMLDivElement, BoardProps>(({ gameState, fallingColorHex, landedColorHex }: BoardProps, ref) => {
   const board = gameState.board;
   const fallingBlockPosition = gameState.currentBlockPosition;
   const currentBlockRotation = getRotationArray(gameState.nextBlocks[0]);
 
-  return <div className="w-64 rounded-b-md rounded-l-md bg-board">
+  return <div tabIndex={0} autoFocus={true} ref={ref} className="w-64 rounded-b-md rounded-l-md bg-board focus-within:border-board focus-within:border-8">
     {board.rows.map((row, rowIndex) => {
       return <div key={row.id} className="flex flex-row">
         {row.cells.map((cell, colIndex) => {
@@ -46,4 +47,6 @@ export default function Board({ gameState, fallingColorHex, landedColorHex }: Bo
       </div>
     })}
   </div>
-}
+})
+
+export default Board

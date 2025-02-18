@@ -32,7 +32,7 @@ function cellAt(
   ) {
     return undefined
   } else {
-    if (position.y < 0 ) {
+    if (position.y < 0) {
       return null
     } else return board.rows[position.y].cells[position.x]
   }
@@ -75,6 +75,9 @@ export function canPlaceBlock(block: Block, position: Coordinates, board: Board)
         const boardColIndex = position.x + colIndex
 
         const cell = cellAt(board, {x: boardColIndex, y: boardRowIndex})
+        if (cell === undefined || cell !== null) {
+          console.log(boardRowIndex, boardColIndex)
+        }
         return cell === undefined || cell !== null
       } else return false
     }) !== undefined
@@ -95,7 +98,7 @@ export function placeBlock(block: Block, position: Coordinates, board: Board): B
           if (rotationCol < 0 || rotationCol > rotationArray[rotationRow].length - 1) {
             return cell
           } else {
-            return rotationArray[rotationRow][rotationCol] === 1 ? block.shape : null
+            return rotationArray[rotationRow][rotationCol] === 1 ? block.shape : cell
           }
         })
       }

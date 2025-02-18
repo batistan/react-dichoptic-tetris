@@ -64,13 +64,13 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
       return initialGameState()
     case GameStateAction.MOVE_LEFT: {
       const newPosition = {x: prevState.currentBlockPosition.x - 1, y: prevState.currentBlockPosition.y};
-      if (canPlaceBlock(currentBlock, prevState.currentBlockPosition, prevState.board)) {
+      if (canPlaceBlock(currentBlock, newPosition, prevState.board)) {
         return {...prevState, currentBlockPosition: newPosition};
       } else return prevState;
     }
     case GameStateAction.MOVE_RIGHT: {
       const newPosition = {x: prevState.currentBlockPosition.x + 1, y: prevState.currentBlockPosition.y};
-      if (canPlaceBlock(currentBlock, prevState.currentBlockPosition, prevState.board)) {
+      if (canPlaceBlock(currentBlock, newPosition, prevState.board)) {
         return {...prevState, currentBlockPosition: newPosition};
       } else return prevState;
     }
@@ -103,7 +103,6 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
       }
     }
     case GameStateAction.HARD_DROP:
-      return prevState
     case GameStateAction.MOVE_DOWN:
     case GameStateAction.TICK: {
       const newPosition = { x: prevState.currentBlockPosition.x, y: prevState.currentBlockPosition.y + 1 }
@@ -111,26 +110,23 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
       if (canPlaceBlock(currentBlock, newPosition, prevState.board)) {
         return {
           ...prevState,
-          currentBlockPosition: newPosition
+          currentBlockPosition: newPosition,
+          score: action === GameStateAction.MOVE_DOWN ? prevState.score + 1 : prevState.score
         }
       } else {
         // land block
-        console.log("Landing block")
         const newBoard = placeBlock(currentBlock, prevState.currentBlockPosition, prevState.board)
         const { clearedBoard, rowIndicesCleared } = clearLines(newBoard)
-        let scoreToAdd = 0
-        if (rowIndicesCleared.length > 0) {
-          scoreToAdd += calculateScore(rowIndicesCleared.length, prevState.linesCleared)
-        }
+        const scoreToAdd = (rowIndicesCleared.length > 0) ?
+          calculateScore(rowIndicesCleared.length, prevState.linesCleared) : 0
         const nextBlock = prevState.nextBlocks[1]
         const gameIsOver = !canPlaceBlock(nextBlock, initBlockCoordinates, clearedBoard)
-        console.log(gameIsOver)
 
         return {
           ...prevState,
           nextBlocks: [...prevState.nextBlocks.slice(1), randomBlock()],
           board: clearedBoard,
-          score: prevState.score + (scoreToAdd * (action === "MOVE_DOWN" ? 1 : 0)),
+          score: prevState.score + scoreToAdd,
           linesCleared: prevState.linesCleared + rowIndicesCleared.length,
           currentBlockPosition: initBlockCoordinates,
           isOver: gameIsOver
