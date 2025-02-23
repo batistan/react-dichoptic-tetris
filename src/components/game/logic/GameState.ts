@@ -8,7 +8,7 @@ import {
   initBlockCoordinates,
   initialBoard, placeBlock
 } from "./Board.ts";
-import {Block, randomBlock, rotateBlock, RotationDirection} from "./Blocks.ts";
+import {Block, RandomBlockGenerator, rotateBlock, RotationDirection} from "./Blocks.ts";
 
 export interface GameState {
   board: Board
@@ -27,7 +27,7 @@ export function initialGameState(): GameState {
   return {
     board: initialBoard(BOARD_WIDTH, BOARD_HEIGHT),
     // nextBlocks[0] is current block, remaining blocks shown in right panel
-    nextBlocks: [randomBlock(), randomBlock(), randomBlock(), randomBlock(), randomBlock(), randomBlock()],
+    nextBlocks: RandomBlockGenerator.getInstance().getNextBlocks(6),
     currentBlockPosition: initBlockCoordinates,
     heldBlock: null,
     canHold: true,
@@ -91,7 +91,7 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
       if (prevState.heldBlock == null) {
         return {
           ...prevState,
-          nextBlocks: [...prevState.nextBlocks.slice(1), randomBlock()],
+          nextBlocks: [...prevState.nextBlocks.slice(1), RandomBlockGenerator.getInstance().getNextBlock()],
           heldBlock: currentBlock,
           canHold: false
         }
@@ -124,7 +124,7 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
 
         return {
           ...prevState,
-          nextBlocks: [...prevState.nextBlocks.slice(1), randomBlock()],
+          nextBlocks: [...prevState.nextBlocks.slice(1), RandomBlockGenerator.getInstance().getNextBlock()],
           board: clearedBoard,
           score: prevState.score + scoreToAdd,
           linesCleared: prevState.linesCleared + rowIndicesCleared.length,

@@ -23,10 +23,62 @@ export function rotateBlock(
   return { ...block, rotation: mod(block.rotation + direction, 4) as Rotation }
 }
 
-export function randomBlock(
-  randomNumberFn: () => number = Math.random
-): Block {
-  return { shape: blockTypes[Math.floor(randomNumberFn() * blockTypes.length)], rotation: 0 }
+export class RandomBlockGenerator {
+  private currentPermutation: Block[]
+  private readonly getPermutation: () => Block[]
+
+  private static instance: RandomBlockGenerator | null = null
+
+  constructor(getPermutation: () => Block[] = generateBlocksPermutation) {
+    this.currentPermutation = getPermutation()
+    this.getPermutation = getPermutation
+  }
+
+  static getInstance(): RandomBlockGenerator {
+    if (RandomBlockGenerator.instance !== null) {
+      return RandomBlockGenerator.instance
+    } else {
+      RandomBlockGenerator.instance = new RandomBlockGenerator()
+      return RandomBlockGenerator.instance
+    }
+  }
+
+  private newPermutation(): void {
+    this.currentPermutation = this.getPermutation()
+    if (this.currentPermutation.length < 1) {
+      throw new Error(`getPermutation must return a non-empty array`)
+    }
+  }
+
+  getNextBlock(): Block {
+    if (this.currentPermutation.length < 1) {
+      this.newPermutation()
+    }
+
+    // @ts-expect-error newPermutation() will throw an error if currentPermutation is still empty
+    return this.currentPermutation.shift()
+  }
+
+  getNextBlocks(num: number): Block[] {
+    return Array(num).fill(0).map(() => {
+      return this.getNextBlock()
+    })
+  }
+}
+
+function generateBlocksPermutation(): Block[] {
+  const permutation = Array(blockTypes.length)
+    .fill(0)
+    .map((_, i) => i) // generate array populated with indices
+
+  for (let i = 0; i < permutation.length; i++) {
+    const randomIndex = Math.floor(Math.random() * permutation.length);
+    [ permutation[i], permutation[randomIndex] ] = [ permutation[randomIndex], permutation[i] ];
+  }
+
+  return permutation.map((ind) => {
+    return { shape: blockTypes[ind], rotation: 0 }
+  })
 }
 
 export const isRotation = (num: number): num is Rotation =>

@@ -75,9 +75,6 @@ export function canPlaceBlock(block: Block, position: Coordinates, board: Board)
         const boardColIndex = position.x + colIndex
 
         const cell = cellAt(board, {x: boardColIndex, y: boardRowIndex})
-        if (cell === undefined || cell !== null) {
-          console.log(boardRowIndex, boardColIndex)
-        }
         return cell === undefined || cell !== null
       } else return false
     }) !== undefined
