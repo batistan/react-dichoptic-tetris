@@ -1,40 +1,49 @@
 import {GameStateAction} from "./logic/GameState.ts";
 import {Dispatch, useEffect} from "react";
 
+/**
+ *
+ * @param event
+ * @param dispatch
+ *
+ * @return true if event was handled, false otherwise
+ */
 export function handleKeyDown(
   event: KeyboardEvent,
   dispatch: Dispatch<GameStateAction>
-) {
+): boolean {
   switch (event.code) {
     case "Escape":
       dispatch(GameStateAction.PAUSE)
-      break;
+      return true;
     case "ArrowLeft":
     case "NumpadArrowLeft":
     case "A":
       dispatch(GameStateAction.MOVE_LEFT)
-      break;
+      return true;
     case "ArrowRight":
     case "NumpadArrowRight":
     case "D":
       dispatch(GameStateAction.MOVE_RIGHT)
-      break;
+      return true;
     case "ArrowDown":
     case "NumpadArrowDown":
     case "S":
       dispatch(GameStateAction.MOVE_DOWN)
-      break;
+      return true;
     case "Space":
       dispatch(GameStateAction.HARD_DROP)
-      break;
+      return true;
     case "Shift":
       dispatch(GameStateAction.HOLD)
-      break;
+      return true;
     case "ArrowUp":
     case "W":
     case "NumpadArrowUp":
       dispatch(GameStateAction.ROTATE_CLOCKWISE)
-      break;
+      return true;
+    default:
+      return false;
   }
 }
 
@@ -43,8 +52,9 @@ export default function useKeyboardControls(
 ): void {
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
-      event.preventDefault()
-      handleKeyDown(event, dispatch)
+      if (handleKeyDown(event, dispatch)) {
+        event.preventDefault()
+      }
     }
 
     window.addEventListener("keydown", eventHandler)
