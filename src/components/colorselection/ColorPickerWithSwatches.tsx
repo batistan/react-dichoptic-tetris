@@ -14,11 +14,12 @@ export default function ColorPickerWithSwatches({color, onChangeColor, swatches}
 
   return <div>
     <HexColorPicker color={color} onChange={onChangeColor} />
-    <div>
+    <div className="flex flex-row flex-wrap">
       {swatches.map((swatch) => {
         return <button
           key={JSON.stringify(swatch)}
           onClick={() => handleSwatchSelect(swatch)}
+          className="aspect-square w-1/12 m-1"
           style={{background: swatch}}
         />
       })}

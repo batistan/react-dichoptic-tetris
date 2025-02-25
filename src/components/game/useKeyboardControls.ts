@@ -18,27 +18,29 @@ export function handleKeyDown(
       return true;
     case "ArrowLeft":
     case "NumpadArrowLeft":
-    case "A":
+    case "KeyA":
       dispatch(GameStateAction.MOVE_LEFT)
       return true;
     case "ArrowRight":
     case "NumpadArrowRight":
-    case "D":
+    case "KeyD":
       dispatch(GameStateAction.MOVE_RIGHT)
       return true;
     case "ArrowDown":
     case "NumpadArrowDown":
-    case "S":
+    case "KeyS":
       dispatch(GameStateAction.MOVE_DOWN)
       return true;
     case "Space":
       dispatch(GameStateAction.HARD_DROP)
       return true;
-    case "Shift":
+    case "ShiftLeft":
+    case "ShiftRight":
+      console.log("hold")
       dispatch(GameStateAction.HOLD)
       return true;
     case "ArrowUp":
-    case "W":
+    case "KeyW":
     case "NumpadArrowUp":
       dispatch(GameStateAction.ROTATE_CLOCKWISE)
       return true;

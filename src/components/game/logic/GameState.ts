@@ -88,6 +88,7 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
       } else return prevState;
     }
     case GameStateAction.HOLD: {
+      console.log("hold")
       if (prevState.isOver || prevState.isPaused) { return prevState }
       if (!prevState.canHold) return prevState
       if (prevState.heldBlock == null) {
