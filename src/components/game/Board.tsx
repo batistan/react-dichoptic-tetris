@@ -28,8 +28,10 @@ export default function Board({ gameState, fallingColorHex, landedColorHex }: Bo
   const fallingBlockPosition = gameState.currentBlockPosition;
   const currentBlockRotation = getRotationArray(gameState.nextBlocks[0]);
 
-  return <div className="w-64 rounded-b-md rounded-l-md bg-board">
-    {board.rows.map((row, rowIndex) => {
+  return <div className="board w-64 rounded-l-md bg-board">
+    { gameState.isPaused ?
+      <p className="shadow">Paused</p>
+      : board.rows.map((row, rowIndex) => {
       return <div key={row.id} className="flex flex-row">
         {row.cells.map((cell, colIndex) => {
           const isCurrentCellInBlock = rotationArrayValue(

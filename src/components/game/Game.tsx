@@ -25,7 +25,7 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
     }
   }, [isOver, isPaused, intervalRef])
 
-  return (<div id="game">
+  return (<div className="flex flex-row justify-start">
     <Board
       gameState={gameState}
       fallingColorHex={fallingColorHex}
