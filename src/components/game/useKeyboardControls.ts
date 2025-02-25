@@ -36,7 +36,6 @@ export function handleKeyDown(
       return true;
     case "ShiftLeft":
     case "ShiftRight":
-      console.log("hold")
       dispatch(GameStateAction.HOLD)
       return true;
     case "ArrowUp":
