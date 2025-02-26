@@ -95,12 +95,14 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
           ...prevState,
           nextBlocks: [...prevState.nextBlocks.slice(1), RandomBlockGenerator.getInstance().getNextBlock()],
           heldBlock: currentBlock,
+          currentBlockPosition: initBlockCoordinates,
           canHold: false
         }
       } else return {
         ...prevState,
         nextBlocks: [prevState.heldBlock, ...prevState.nextBlocks.slice(1)],
         heldBlock: currentBlock,
+        currentBlockPosition: initBlockCoordinates,
         canHold: false
       }
     }

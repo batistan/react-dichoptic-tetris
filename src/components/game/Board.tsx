@@ -41,7 +41,6 @@ export default function Board({ gameState, fallingColorHex, landedColorHex }: Bo
             currentBlockRotation
           ) === 1
 
-          // const color = cell === null ? "transparent" : (isCurrentCellInBlock ? fallingColorHex : landedColorHex)
           const color = isCurrentCellInBlock ? fallingColorHex : (cell === null ? "transparent" : landedColorHex)
           return <div key={`${row.id}-${colIndex}`} className="cell" style={{ backgroundColor: color }}/>
         })}
