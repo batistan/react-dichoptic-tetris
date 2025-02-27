@@ -19,13 +19,10 @@ export default function ColorPickerWithSwatches({color, onChangeColor, swatches}
         return <button
           key={JSON.stringify(swatch)}
           onClick={() => handleSwatchSelect(swatch)}
-          className="aspect-square w-1/12 m-1"
+          className="aspect-square w-1/12 m-1 rounded-sm"
           style={{background: swatch}}
         />
       })}
-    </div>
-    <div className="flex flex-row gap-2">
-      <div style={{background: color}}/><p>{color}</p>
     </div>
   </div>
 }

@@ -53,6 +53,7 @@ export default function useKeyboardControls(
 ): void {
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
+      // if we used the key to dispatch an action, disable default event behavior
       if (handleKeyDown(event, dispatch)) {
         event.preventDefault()
       }

@@ -1,9 +1,9 @@
 import {Block, getRotationArray} from "./logic/Blocks.ts";
 
-export default function BlockPreview({ block, color }: { block: Block, color: string }) {
-  const rotationArray = getRotationArray(block);
+export default function BlockPreview({ block, color }: { block: Block | null, color: string }) {
+  const rotationArray = getRotationArray(block ?? { shape: "ghost", rotation: 0 });
 
-  return <div className="bg-board py-3" key={crypto.randomUUID()}>
+  return <div className="bg-board px-3" key={crypto.randomUUID()}>
     { rotationArray && rotationArray.map((row) => {
       return <div className="flex flex-row justify-center" key={crypto.randomUUID()}>
         {
