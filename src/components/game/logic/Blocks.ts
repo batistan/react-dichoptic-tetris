@@ -69,20 +69,18 @@ export class RandomBlockGenerator {
 function generateBlocksPermutation(): Block[] {
   const permutation = Array(blockTypes.length)
     .fill(0)
-    .map((_, i) => i) // generate array populated with indices
+    .map((_, i) => {
+      return { shape: blockTypes[i], rotation: 0 }
+    }) // generate array populated with values
 
-  for (let i = 0; i < permutation.length; i++) {
-    const randomIndex = Math.floor(Math.random() * permutation.length);
-    [ permutation[i], permutation[randomIndex] ] = [ permutation[randomIndex], permutation[i] ];
+  // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+  for (let i = permutation.length; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * i);
+    [ permutation[i - 1], permutation[randomIndex] ] = [ permutation[randomIndex], permutation[i - 1] ];
   }
 
-  return permutation.map((ind) => {
-    return { shape: blockTypes[ind], rotation: 0 }
-  })
+  return permutation
 }
-
-export const isRotation = (num: number): num is Rotation =>
-  num >= 0 && num < 4;
 
 // matrix of possible block types
 // the "correct" way to do this is with actual rotations, modeling your block as existing in a 2d plane and computing

@@ -6,25 +6,30 @@ import "./game.css"
 import useKeyboardControls from "./useKeyboardControls.ts";
 import HoldBlock from "./HoldBlock.tsx";
 
+const TARGET_FPS: number = 60;
+
 export default function Game({ fallingColorHex, landedColorHex }: { fallingColorHex: string; landedColorHex: string }) {
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const { isOver, isPaused } = gameState;
+  const { isOver, isPaused, linesCleared } = gameState;
+
+  const level = calculateLevel(linesCleared)
 
   useKeyboardControls(dispatch)
 
   useEffect(() => {
     if (!isOver && !isPaused) {
+      const millisPerTick = (Math.floor(48 / level) / TARGET_FPS) * 1000
       intervalRef.current = setInterval(() => {
         dispatch(GameStateAction.TICK)
-      }, 500)
+      }, millisPerTick)
     }
 
     return () => {
       if (intervalRef.current) { clearInterval(intervalRef.current) }
     }
-  }, [isOver, isPaused, intervalRef])
+  }, [isOver, isPaused, level, intervalRef])
 
   return (<div className="flex flex-row justify-start">
     <HoldBlock heldBlock={gameState.heldBlock} color={fallingColorHex} />
@@ -36,7 +41,7 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
     <Info blockColor={fallingColorHex}
           nextBlocks={gameState.nextBlocks.slice(1)}
           score={gameState.score}
-          level={calculateLevel(gameState.linesCleared)}
+          level={level}
     />
   </div>)
 }
