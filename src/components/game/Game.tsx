@@ -7,6 +7,9 @@ import useKeyboardControls from "./useKeyboardControls.ts";
 import HoldBlock from "./HoldBlock.tsx";
 
 const TARGET_FPS: number = 60;
+// https://listfist.com/list-of-tetris-levels-by-speed-nes-ntsc-vs-pal
+// not one to one, but a decent approximation
+const FRAMES_PER_TICK_PER_LEVEL = 48;
 
 export default function Game({ fallingColorHex, landedColorHex }: { fallingColorHex: string; landedColorHex: string }) {
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
@@ -20,7 +23,7 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
 
   useEffect(() => {
     if (!isOver && !isPaused) {
-      const millisPerTick = (Math.floor(48 / level) / TARGET_FPS) * 1000
+      const millisPerTick = (Math.floor(FRAMES_PER_TICK_PER_LEVEL / level) / TARGET_FPS) * 1000
       intervalRef.current = setInterval(() => {
         dispatch(GameStateAction.TICK)
       }, millisPerTick)
