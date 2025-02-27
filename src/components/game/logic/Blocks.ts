@@ -70,7 +70,7 @@ function generateBlocksPermutation(): Block[] {
   const permutation = Array(blockTypes.length)
     .fill(0)
     .map((_, i) => {
-      return { shape: blockTypes[i], rotation: 0 }
+      return { shape: blockTypes[i], rotation: 0 as Rotation }
     }) // generate array populated with values
 
   // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
