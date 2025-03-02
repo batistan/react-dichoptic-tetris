@@ -2,13 +2,9 @@
     visibility: hidden;
 }
 
-.board {
-
-}
-
 .cell {
     width: 10vh;
-    max-width: 5vh;
+    margin: -1px;
     aspect-ratio: 1 / 1;
     border: 1px solid #AAAAAA
 }

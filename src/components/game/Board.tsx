@@ -23,12 +23,26 @@ function rotationArrayValue(
   return rotationArray[rotationRow][rotationCol];
 }
 
+function getCellColor(
+  isFallingBlock: boolean,
+  isLandedBlock: boolean,
+  isGhostBlock: boolean,
+  fallingColorHex: string,
+  landedColorHex: string
+): string {
+  return isFallingBlock ? fallingColorHex : (
+    isLandedBlock ? landedColorHex : (
+      isGhostBlock ? "gray" : "transparent"
+    )
+  );
+}
+
 export default function Board({ gameState, fallingColorHex, landedColorHex }: BoardProps) {
   const board = gameState.board;
   const fallingBlockPosition = gameState.currentBlockPosition;
   const currentBlockRotation = getRotationArray(gameState.nextBlocks[0]);
 
-  return <div className="board w-64 rounded-l-md bg-board">
+  return <div className="w-64 rounded-l-md bg-board overflow-hidden">
     { gameState.isPaused ?
       <p className="shadow">Paused</p>
       : board.rows.map((row, rowIndex) => {
@@ -41,7 +55,23 @@ export default function Board({ gameState, fallingColorHex, landedColorHex }: Bo
             currentBlockRotation
           ) === 1
 
-          const color = isCurrentCellInBlock ? fallingColorHex : (cell === null ? "transparent" : landedColorHex)
+          const isCurrentCellGhostBlock = rotationArrayValue(
+            rowIndex,
+            colIndex,
+            gameState.ghostBlockPosition,
+            currentBlockRotation
+          ) === 1
+
+          const isEmptyCell = cell === null
+
+          const color = getCellColor(
+            isCurrentCellInBlock,
+            !isEmptyCell,
+            isCurrentCellGhostBlock,
+            fallingColorHex,
+            landedColorHex
+          )
+
           return <div key={`${row.id}-${colIndex}`} className="cell" style={{ backgroundColor: color }}/>
         })}
       </div>

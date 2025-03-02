@@ -81,6 +81,16 @@ export function canPlaceBlock(block: Block, position: Coordinates, board: Board)
   }) === undefined
 }
 
+export function ghostBlockPosition(block: Block, board: Board, currentBlockPosition: Coordinates): Coordinates {
+  let ghostCoords = { ... currentBlockPosition, y: currentBlockPosition.y + 1 };
+
+  while (canPlaceBlock(block, ghostCoords, board)) {
+    ghostCoords = { ...ghostCoords, y: ghostCoords.y + 1 }
+  }
+
+  return { ...ghostCoords, y: ghostCoords.y - 1 };
+}
+
 export function placeBlock(block: Block, position: Coordinates, board: Board): Board {
   const rotationArray = getRotationArray(block)
 
