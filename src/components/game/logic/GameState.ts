@@ -104,7 +104,7 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
         return {
           ...prevState,
           nextBlocks: [...prevState.nextBlocks.slice(1), RandomBlockGenerator.getInstance().getNextBlock()],
-          heldBlock: currentBlock,
+          heldBlock: { ...currentBlock, rotation: 0 },
           currentBlockPosition: initBlockCoordinates,
           ghostBlockPosition: ghostBlockPosition(prevState.nextBlocks[1], prevState.board, initBlockCoordinates),
           canHold: false
@@ -112,7 +112,7 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
       } else return {
         ...prevState,
         nextBlocks: [prevState.heldBlock, ...prevState.nextBlocks.slice(1)],
-        heldBlock: currentBlock,
+        heldBlock: { ...currentBlock, rotation: 0 },
         currentBlockPosition: initBlockCoordinates,
         ghostBlockPosition: ghostBlockPosition(prevState.heldBlock, prevState.board, initBlockCoordinates),
         canHold: false

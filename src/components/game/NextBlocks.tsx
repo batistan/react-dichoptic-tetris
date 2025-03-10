@@ -6,7 +6,7 @@ export default function NextBlocks({blocks, color}: {blocks: Block[], color: str
     <p className="text-center font-mono uppercase text-gray-700">Next</p>
     <div className="flex flex-col overflow-hidden rounded-md">
       { blocks.map(block => {
-        return <div className="bg-board" key={crypto.randomUUID()}>
+        return <div className="bg-board py-1" key={crypto.randomUUID()}>
           <BlockPreview block={block} color={color} />
         </div>
       })
