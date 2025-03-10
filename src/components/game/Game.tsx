@@ -10,6 +10,8 @@ const TARGET_FPS: number = 60;
 // https://listfist.com/list-of-tetris-levels-by-speed-nes-ntsc-vs-pal
 // not one to one, but a decent approximation
 const FRAMES_PER_TICK_PER_LEVEL = 48;
+const HIGH_SCORE_KEY = "highScore";
+const HIGH_SCORE = (localStorage && localStorage.getItem(HIGH_SCORE_KEY)) ?? "0";
 
 export default function Game({ fallingColorHex, landedColorHex }: { fallingColorHex: string; landedColorHex: string }) {
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
@@ -34,8 +36,17 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
     }
   }, [isOver, isPaused, level, intervalRef])
 
+  useEffect(() => {
+    localStorage.setItem(HIGH_SCORE_KEY, Math.max(gameState.score, +HIGH_SCORE).toString())
+  }, [isOver]);
+
   return (<div className="flex flex-row justify-start">
-    <HoldBlock heldBlock={gameState.heldBlock} color={fallingColorHex} />
+    <HoldBlock heldBlock={gameState.heldBlock}
+               color={fallingColorHex}
+               score={gameState.score}
+               hiScore={+HIGH_SCORE}
+               level={level}
+    />
     <Board
       gameState={gameState}
       fallingColorHex={fallingColorHex}
@@ -43,8 +54,6 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
     />
     <Info blockColor={fallingColorHex}
           nextBlocks={gameState.nextBlocks.slice(1)}
-          score={gameState.score}
-          level={level}
     />
   </div>)
 }
