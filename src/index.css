@@ -4,8 +4,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #374151;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,14 +11,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body > div {
-  border: 2px solid red;
+body * {
+  @apply transition-colors duration-75 transform;
 }
 
 body {
   display: flex;
   justify-content: start;
-  border: 2px solid red;
 }
 
 a {
@@ -43,10 +40,6 @@ h1 {
   line-height: 1.1;
 }
 
-.info-box div {
-  background-color: #374151;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -57,6 +50,22 @@ h1 {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@layer base {
+  :root {
+    --color-bg: #e5e7eb;
+    --color-text: #374151;
+    --color-board: #111827;
+    --color-info: #686868;
+  }
+
+  :root[class~="dark"] {
+    --color-bg: #111827;
+    --color-text: #e5e7eb;
+    --color-board: #9ca3af;
+    --color-info: #686868;
   }
 }
 

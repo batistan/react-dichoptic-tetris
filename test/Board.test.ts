@@ -66,11 +66,11 @@ describe("clearLines tests", () => {
       ), occupiedRow]
     }
 
-    const { newBoard, rowIndicesCleared } = clearLines(occupiedBoard)
+    const { clearedBoard, rowIndicesCleared } = clearLines(occupiedBoard)
 
     expect(rowIndicesCleared.length).toBe(1)
     expect(rowIndicesCleared[0]).toBe(19)
-    expect(newBoard.rows[rowIndicesCleared[0]].cells.find(c => c !== null)).toBeFalsy()
+    expect(clearedBoard.rows[rowIndicesCleared[0]].cells.find(c => c !== null)).toBeFalsy()
   })
 
   test("clearing multiple lines shifts all lines down to be adjacent", async () => {
@@ -85,12 +85,12 @@ describe("clearLines tests", () => {
       ), partiallyOccupiedRow, occupiedRowOne, partiallyOccupiedRow, occupiedRowTwo]
     }
 
-    const { newBoard, rowIndicesCleared } = clearLines(occupiedBoard)
+    const { clearedBoard, rowIndicesCleared } = clearLines(occupiedBoard)
 
     expect(rowIndicesCleared.length).toBe(2)
     expect(rowIndicesCleared[0]).toBe(17)
     expect(rowIndicesCleared[1]).toBe(19)
-    expect(newBoard.rows[19]).toBe(partiallyOccupiedRow)
-    expect(newBoard.rows[18]).toBe(partiallyOccupiedRow)
+    expect(clearedBoard.rows[19]).toBe(partiallyOccupiedRow)
+    expect(clearedBoard.rows[18]).toBe(partiallyOccupiedRow)
   })
 })

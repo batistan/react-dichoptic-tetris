@@ -1,12 +1,10 @@
-#game {
-    width: 66.6666%;
-    border: 2px green solid;
-}
-
-#next-blocks {
-
-}
-
 .next-block:nth-child(n + 1) {
     visibility: hidden;
+}
+
+.cell {
+    width: 10vh;
+    margin: -1px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #AAAAAA
 }

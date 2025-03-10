@@ -12,21 +12,75 @@ export enum RotationDirection {
 }
 export type RotationArray = number[][]
 
+function mod(n: number, m: number): number {
+  return ((n % m) + m) % m;
+}
+
 export function rotateBlock(
   block: Block,
   direction: RotationDirection
 ): Block {
-  return { ...block, rotation: ((block.rotation + direction) % 4) as Rotation }
+  return { ...block, rotation: mod(block.rotation + direction, 4) as Rotation }
 }
 
-export function randomBlock(
-  randomNumberFn: () => number = Math.random
-): Block {
-  return { shape: blockTypes[Math.floor(randomNumberFn() * blockTypes.length)], rotation: 0 }
+export class RandomBlockGenerator {
+  private currentPermutation: Block[]
+  private readonly getPermutation: () => Block[]
+
+  private static instance: RandomBlockGenerator | null = null
+
+  constructor(getPermutation: () => Block[] = generateBlocksPermutation) {
+    this.currentPermutation = getPermutation()
+    this.getPermutation = getPermutation
+  }
+
+  static getInstance(): RandomBlockGenerator {
+    if (RandomBlockGenerator.instance !== null) {
+      return RandomBlockGenerator.instance
+    } else {
+      RandomBlockGenerator.instance = new RandomBlockGenerator()
+      return RandomBlockGenerator.instance
+    }
+  }
+
+  private newPermutation(): void {
+    this.currentPermutation = this.getPermutation()
+    if (this.currentPermutation.length < 1) {
+      throw new Error(`getPermutation must return a non-empty array`)
+    }
+  }
+
+  getNextBlock(): Block {
+    if (this.currentPermutation.length < 1) {
+      this.newPermutation()
+    }
+
+    // @ts-expect-error newPermutation() will throw an error if currentPermutation is still empty
+    return this.currentPermutation.shift()
+  }
+
+  getNextBlocks(num: number): Block[] {
+    return Array(num).fill(0).map(() => {
+      return this.getNextBlock()
+    })
+  }
 }
 
-export const isRotation = (num: number): num is Rotation =>
-  num >= 0 && num < 4;
+function generateBlocksPermutation(): Block[] {
+  const permutation = Array(blockTypes.length)
+    .fill(0)
+    .map((_, i) => {
+      return { shape: blockTypes[i], rotation: 0 as Rotation }
+    }) // generate array populated with values
+
+  // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+  for (let i = permutation.length; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * i);
+    [ permutation[i - 1], permutation[randomIndex] ] = [ permutation[randomIndex], permutation[i - 1] ];
+  }
+
+  return permutation
+}
 
 // matrix of possible block types
 // the "correct" way to do this is with actual rotations, modeling your block as existing in a 2d plane and computing
@@ -37,6 +91,12 @@ export const getRotationArray = (block: Block): RotationArray => {
     case 'I':
       return [
         [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [1, 1, 1, 1],
+          [0, 0, 0, 0]
+        ],
+        [
           [0, 1, 0, 0],
           [0, 1, 0, 0],
           [0, 1, 0, 0],
@@ -44,101 +104,95 @@ export const getRotationArray = (block: Block): RotationArray => {
         ],
         [
           [0, 0, 0, 0],
-          [1, 1, 1, 1],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 1, 0],
-          [0, 0, 1, 0],
-          [0, 0, 1, 0],
-          [0, 0, 1, 0]
-        ],
-        [
-          [0, 0, 0, 0],
           [0, 0, 0, 0],
           [1, 1, 1, 1],
           [0, 0, 0, 0]
+        ],
+        [
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0]
         ]
       ][block.rotation];
     case 'J':
       return [
         [
-          [0, 1, 0, 0],
-          [0, 1, 0, 0],
-          [1, 1, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [1, 0, 0, 0],
-          [1, 1, 1, 0],
           [0, 0, 0, 0],
-          [0, 0, 0, 0]
+          [0, 0, 0, 0],
+          [1, 0, 0, 0],
+          [1, 1, 1, 0]
         ],
         [
+          [0, 0, 0, 0],
           [0, 1, 1, 0],
           [0, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 0, 0, 0]
+          [0, 1, 0, 0]
         ],
         [
           [0, 0, 0, 0],
+          [0, 0, 0, 0],
           [1, 1, 1, 0],
-          [0, 0, 1, 0],
-          [0, 0, 0, 0]
-        ]
+          [0, 0, 1, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [1, 1, 0, 0]
+        ],
       ][block.rotation];
     case 'L':
       return [
         [
-          [0, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 1, 1, 0],
-          [0, 0, 0, 0]
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [0, 0, 1, 0],
+          [1, 1, 1, 0]
         ],
         [
           [0, 0, 0, 0],
-          [1, 1, 1, 0],
-          [1, 0, 0, 0],
-          [0, 0, 0, 0]
+          [0, 1, 0, 0],
+          [0, 1, 0, 0],
+          [0, 1, 1, 0]
         ],
         [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [1, 1, 1, 0],
+          [1, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
           [1, 1, 0, 0],
           [0, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 1, 0],
-          [1, 1, 1, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
+          [0, 1, 0, 0]
         ]
       ][block.rotation];
     case 'O':
       return [
         [
-          [1, 1, 0, 0],
-          [1, 1, 0, 0],
           [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
           [0, 0, 0, 0]
         ],
         [
-          [1, 1, 0, 0],
-          [1, 1, 0, 0],
           [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
           [0, 0, 0, 0]
         ],
         [
-          [1, 1, 0, 0],
-          [1, 1, 0, 0],
           [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
           [0, 0, 0, 0]
         ],
         [
-          [1, 1, 0, 0],
-          [1, 1, 0, 0],
           [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
           [0, 0, 0, 0]
         ]
       ][block.rotation];
@@ -146,86 +200,90 @@ export const getRotationArray = (block: Block): RotationArray => {
       return [
         [
           [0, 0, 0, 0],
+          [0, 0, 0, 0],
           [0, 1, 1, 0],
-          [1, 1, 0, 0],
-          [0, 0, 0, 0]
+          [1, 1, 0, 0]
         ],
         [
+          [0, 0, 0, 0],
           [1, 0, 0, 0],
           [1, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 0, 0, 0]
+          [0, 1, 0, 0]
         ],
         [
-          [0, 1, 1, 0],
-          [1, 1, 0, 0],
           [0, 0, 0, 0],
-          [0, 0, 0, 0]
+          [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [1, 1, 0, 0]
         ],
         [
-          [0, 1, 0, 0],
-          [0, 1, 1, 0],
-          [0, 0, 1, 0],
-          [0, 0, 0, 0]
+          [0, 0, 0, 0],
+          [1, 0, 0, 0],
+          [1, 1, 0, 0],
+          [0, 1, 0, 0]
         ]
       ][block.rotation];
     case 'Z':
       return [
         [
           [0, 0, 0, 0],
-          [1, 1, 0, 0],
-          [0, 1, 1, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 1, 0, 0],
-          [1, 1, 0, 0],
-          [1, 0, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [1, 1, 0, 0],
-          [0, 1, 1, 0],
           [0, 0, 0, 0],
-          [0, 0, 0, 0]
+          [1, 1, 0, 0],
+          [0, 1, 1, 0]
         ],
         [
-          [0, 0, 1, 0],
-          [0, 1, 1, 0],
+          [0, 0, 0, 0],
           [0, 1, 0, 0],
-          [0, 0, 0, 0]
+          [1, 1, 0, 0],
+          [1, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [1, 1, 0, 0],
+          [0, 1, 1, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [0, 1, 0, 0],
+          [1, 1, 0, 0],
+          [1, 0, 0, 0]
         ]
       ][block.rotation];
     case 'T':
       return [
         [
           [0, 0, 0, 0],
-          [1, 1, 1, 0],
           [0, 1, 0, 0],
+          [1, 1, 1, 0],
           [0, 0, 0, 0]
         ],
         [
-          [0, 1, 0, 0],
-          [1, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 1, 0, 0],
-          [1, 1, 1, 0],
           [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
           [0, 1, 0, 0],
           [0, 1, 1, 0],
+          [0, 1, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+          [1, 1, 1, 0],
+          [0, 1, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
           [0, 1, 0, 0],
-          [0, 0, 0, 0]
+          [1, 1, 0, 0],
+          [0, 1, 0, 0]
         ]
       ][block.rotation];
     default: {
-      console.warn(`Unknown block ${block}`)
-      return [];
+      return [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+      ];
     }
   }
 };

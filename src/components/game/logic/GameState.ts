@@ -4,16 +4,17 @@ import {
   BOARD_WIDTH,
   canPlaceBlock,
   clearLines,
-  Coordinates,
+  Coordinates, ghostBlockPosition,
   initBlockCoordinates,
-  initialBoard
+  initialBoard, placeBlock
 } from "./Board.ts";
-import {Block, randomBlock, rotateBlock, RotationDirection} from "./Blocks.ts";
+import {Block, RandomBlockGenerator, rotateBlock, RotationDirection} from "./Blocks.ts";
 
 export interface GameState {
   board: Board
   nextBlocks: Block[],
   currentBlockPosition: Coordinates,
+  ghostBlockPosition: Coordinates,
   heldBlock: Block | null,
   score: number,
   linesCleared: number,
@@ -24,11 +25,16 @@ export interface GameState {
 }
 
 export function initialGameState(): GameState {
+  const initBlocks = RandomBlockGenerator.getInstance().getNextBlocks(6)
+  const initBoard = initialBoard(BOARD_WIDTH, BOARD_HEIGHT)
+  const initGhostCoords = ghostBlockPosition(initBlocks[0], initBoard, initBlockCoordinates)
+
   return {
-    board: initialBoard(BOARD_WIDTH, BOARD_HEIGHT),
+    board: initBoard,
     // nextBlocks[0] is current block, remaining blocks shown in right panel
-    nextBlocks: [randomBlock(), randomBlock(), randomBlock(), randomBlock(), randomBlock(), randomBlock()],
+    nextBlocks: initBlocks,
     currentBlockPosition: initBlockCoordinates,
+    ghostBlockPosition: initGhostCoords,
     heldBlock: null,
     canHold: true,
     linesCleared: 0,
@@ -39,98 +45,127 @@ export function initialGameState(): GameState {
   }
 }
 
-export type GameStateAction =
-  "TICK" |
-  "PAUSE" |
-  "RESUME" |
-  "RESTART" |
-  "MOVE_LEFT" |
-  "MOVE_RIGHT" |
-  "MOVE_DOWN" |
-  "ROTATE_CLOCKWISE" |
-  "ROTATE_ANTI_CLOCKWISE" |
-  "HARD_DROP" |
-  "HOLD"
+export enum GameStateAction {
+  TICK = "TICK",
+  PAUSE = "PAUSE",
+  RESTART = "RESTART",
+  MOVE_LEFT = "MOVE_LEFT",
+  MOVE_RIGHT = "MOVE_RIGHT",
+  MOVE_DOWN = "MOVE_DOWN",
+  ROTATE_CLOCKWISE = "ROTATE_CLOCKWISE",
+  ROTATE_ANTI_CLOCKWISE = "ROTATE_ANTI_CLOCKWISE",
+  HARD_DROP = "HARD_DROP",
+  HOLD = "HOLD"
+}
 
 export function getNextGameState(prevState: GameState, action: GameStateAction): GameState {
   const currentBlock = prevState.nextBlocks[0]
   switch (action) {
-    case "PAUSE":
-      return {...prevState, isPaused: true};
-    case "RESUME":
-      return {...prevState, isPaused: false};
-    case "RESTART":
+    case GameStateAction.PAUSE:
+      return {...prevState, isPaused: !prevState.isPaused};
+    case GameStateAction.RESTART:
       return initialGameState()
-    case "MOVE_LEFT": {
+    case GameStateAction.MOVE_LEFT: {
+      if (prevState.isOver || prevState.isPaused) { return prevState }
       const newPosition = {x: prevState.currentBlockPosition.x - 1, y: prevState.currentBlockPosition.y};
-      if (canPlaceBlock(currentBlock, prevState.currentBlockPosition, prevState.board)) {
-        return {...prevState, currentBlockPosition: newPosition};
+      if (canPlaceBlock(currentBlock, newPosition, prevState.board)) {
+        const newGhostPosition = ghostBlockPosition(currentBlock, prevState.board, newPosition);
+        return {...prevState, currentBlockPosition: newPosition, ghostBlockPosition: newGhostPosition};
       } else return prevState;
     }
-    case "MOVE_RIGHT": {
+    case GameStateAction.MOVE_RIGHT: {
+      if (prevState.isOver || prevState.isPaused) { return prevState }
       const newPosition = {x: prevState.currentBlockPosition.x + 1, y: prevState.currentBlockPosition.y};
-      if (canPlaceBlock(currentBlock, prevState.currentBlockPosition, prevState.board)) {
-        return {...prevState, currentBlockPosition: newPosition};
+      if (canPlaceBlock(currentBlock, newPosition, prevState.board)) {
+        const newGhostPosition = ghostBlockPosition(currentBlock, prevState.board, newPosition);
+        return {...prevState, currentBlockPosition: newPosition, ghostBlockPosition: newGhostPosition};
       } else return prevState;
     }
-    case "ROTATE_CLOCKWISE": {
+    case GameStateAction.ROTATE_CLOCKWISE: {
+      if (prevState.isOver || prevState.isPaused) { return prevState }
       const rotated = rotateBlock(currentBlock, RotationDirection.CLOCKWISE)
       if (canPlaceBlock(rotated, prevState.currentBlockPosition, prevState.board)) {
-        return {...prevState, nextBlocks: [rotated, ...prevState.nextBlocks.slice(1)]};
+        const newGhostPosition = ghostBlockPosition(rotated, prevState.board, prevState.currentBlockPosition);
+        return {...prevState, nextBlocks: [rotated, ...prevState.nextBlocks.slice(1)], ghostBlockPosition: newGhostPosition};
       } else return prevState;
     }
-    case "ROTATE_ANTI_CLOCKWISE": {
+    case GameStateAction.ROTATE_ANTI_CLOCKWISE: {
+      if (prevState.isOver || prevState.isPaused) { return prevState }
       const rotated = rotateBlock(currentBlock, RotationDirection.ANTI_CLOCKWISE)
       if (canPlaceBlock(rotated, prevState.currentBlockPosition, prevState.board)) {
-        return {...prevState, nextBlocks: [rotated, ...prevState.nextBlocks.slice(1)]};
+        const newGhostPosition = ghostBlockPosition(rotated, prevState.board, prevState.currentBlockPosition);
+        return {...prevState, nextBlocks: [rotated, ...prevState.nextBlocks.slice(1)], ghostBlockPosition: newGhostPosition};
       } else return prevState;
     }
-    case "HOLD": {
+    case GameStateAction.HOLD: {
+      if (prevState.isOver || prevState.isPaused) { return prevState }
       if (!prevState.canHold) return prevState
       if (prevState.heldBlock == null) {
         return {
           ...prevState,
-          nextBlocks: [...prevState.nextBlocks.slice(1), randomBlock()],
-          heldBlock: currentBlock,
+          nextBlocks: [...prevState.nextBlocks.slice(1), RandomBlockGenerator.getInstance().getNextBlock()],
+          heldBlock: { ...currentBlock, rotation: 0 },
+          currentBlockPosition: initBlockCoordinates,
+          ghostBlockPosition: ghostBlockPosition(prevState.nextBlocks[1], prevState.board, initBlockCoordinates),
           canHold: false
         }
       } else return {
         ...prevState,
-        nextBlocks: [...prevState.nextBlocks.slice(1), randomBlock()],
+        nextBlocks: [prevState.heldBlock, ...prevState.nextBlocks.slice(1)],
+        heldBlock: { ...currentBlock, rotation: 0 },
+        currentBlockPosition: initBlockCoordinates,
+        ghostBlockPosition: ghostBlockPosition(prevState.heldBlock, prevState.board, initBlockCoordinates),
         canHold: false
       }
     }
-    case "HARD_DROP":
-      return prevState
-    case "MOVE_DOWN":
-    case "TICK": {
+    case GameStateAction.HARD_DROP: {
+      if (prevState.isOver || prevState.isPaused) { return prevState }
+
+      return landBlock({
+        ...prevState,
+        currentBlockPosition: prevState.ghostBlockPosition,
+        score: prevState.score + (prevState.ghostBlockPosition.y - prevState.currentBlockPosition.y)
+      })
+    }
+    case GameStateAction.MOVE_DOWN:
+    case GameStateAction.TICK: {
       const newPosition = { x: prevState.currentBlockPosition.x, y: prevState.currentBlockPosition.y + 1 }
 
       if (canPlaceBlock(currentBlock, newPosition, prevState.board)) {
         return {
           ...prevState,
-          currentBlockPosition: newPosition
+          currentBlockPosition: newPosition,
+          score: action === GameStateAction.MOVE_DOWN ? prevState.score + 1 : prevState.score
         }
       } else {
-        // land block
-        const { newBoard, rowIndicesCleared } = clearLines(prevState.board)
-        let scoreToAdd = 0
-        if (rowIndicesCleared.length > 0) {
-          scoreToAdd += calculateScore(rowIndicesCleared.length, prevState.linesCleared)
-        }
-        const nextBlock = prevState.nextBlocks[1]
-        const gameIsOver = !canPlaceBlock(nextBlock, initBlockCoordinates, newBoard)
-
-        return {
-          ...prevState,
-          board: newBoard,
-          score: prevState.score + scoreToAdd + ((action === "MOVE_DOWN") ? 1 : 0),
-          linesCleared: prevState.linesCleared + rowIndicesCleared.length,
-          currentBlockPosition: initBlockCoordinates,
-          isOver: gameIsOver
-        }
+        return landBlock(prevState)
       }
     }
+  }
+}
+
+function landBlock(
+  prevState: GameState
+): GameState {
+  const currentBlock = prevState.nextBlocks[0]
+  // land block
+  const newBoard = placeBlock(currentBlock, prevState.currentBlockPosition, prevState.board)
+  const { clearedBoard, rowIndicesCleared } = clearLines(newBoard)
+  const scoreToAdd = (rowIndicesCleared.length > 0) ?
+    calculateScore(rowIndicesCleared.length, prevState.linesCleared) : 0
+  const nextBlock = prevState.nextBlocks[1]
+  const gameIsOver = !canPlaceBlock(nextBlock, initBlockCoordinates, clearedBoard)
+
+  return {
+    ...prevState,
+    canHold: true,
+    nextBlocks: [...prevState.nextBlocks.slice(1), RandomBlockGenerator.getInstance().getNextBlock()],
+    board: clearedBoard,
+    score: prevState.score + scoreToAdd,
+    linesCleared: prevState.linesCleared + rowIndicesCleared.length,
+    currentBlockPosition: initBlockCoordinates,
+    ghostBlockPosition: ghostBlockPosition(prevState.nextBlocks[1], clearedBoard, initBlockCoordinates),
+    isOver: gameIsOver
   }
 }
 
