@@ -7,7 +7,7 @@ interface InfoProps {
 }
 
 export default function Info({nextBlocks, blockColor}: InfoProps) {
-  return <div className="flex flex-col align-middle w-32 bg-info rounded-r-md">
+  return <div className="flex flex-col align-middle w-32 rounded-r-md">
     <NextBlocks blocks={nextBlocks} color={blockColor} />
   </div>
 }

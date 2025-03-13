@@ -24,28 +24,26 @@ export default function ColorSelection({ fallingColor, landedColor, handleFallin
     handleLandedColorChange(fallingColor)
   }
 
-  return <div className="flex flex-col order-1 md:-order-1 m-4">
-    <div className="flex flex-col md:flex-row justify-around gap-4">
-      <div className="flex flex-col">
-        <p>Falling Block Color</p>
-        <ColorPickerWithSwatches
-          color={fallingColor}
-          swatches={leftSwatches}
-          onChangeColor={handleFallingColorChange}
-        />
-      </div>
-      <div>
-        <p>Landed Block Color</p>
-        <ColorPickerWithSwatches
-          color={landedColor}
-          onChangeColor={handleLandedColorChange}
-          swatches={rightSwatches}
-        />
-      </div>
+  return <div className="flex flex-col justify-around gap-4 order-1 md:-order-1">
+    <div className="flex flex-col">
+      <p>Falling Block Color</p>
+      <ColorPickerWithSwatches
+        color={fallingColor}
+        swatches={leftSwatches}
+        onChangeColor={handleFallingColorChange}
+      />
     </div>
     <button
       onClick={handleSwap}>
       ⇔ Swap
     </button>
+    <div>
+      <p>Landed Block Color</p>
+      <ColorPickerWithSwatches
+        color={landedColor}
+        onChangeColor={handleLandedColorChange}
+        swatches={rightSwatches}
+      />
+    </div>
   </div>
 }

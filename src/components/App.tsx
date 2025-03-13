@@ -6,8 +6,6 @@ import ColorSelection from "./colorselection/ColorSelection.tsx";
 import {Header} from "./Header.tsx";
 
 const containerClasses = [
-  "bg-background",
-  "text-text",
   "h-full",
   "flex",
   "items-center",
@@ -15,7 +13,7 @@ const containerClasses = [
   "flex-col",
   "md:flex-row",
   "md:align-middle",
-  "md:justify-start",
+  "md:justify-around",
 ].join(' ');
 
 function App() {
