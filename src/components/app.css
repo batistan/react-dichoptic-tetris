@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+/* specific colors, e.g. color-background is neutral-1, which will be light or dark based on class */
+@theme inline {
+    --color-background: var(--color-neutral-1);
+    --color-header: var(--color-neutral-3);
+    --color-board-bg: var(--color-neutral-4);
+    --color-text: var(--color-primary-1);
+    --color-text-bright: var(--color-primary-2);
+    --color-info-bg: var(--color-neutral-6);
+}

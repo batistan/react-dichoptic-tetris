@@ -5,7 +5,7 @@ export default function BlockPreview({ block, color }: { block: Block | null, co
 
   return <div className="px-3" key={crypto.randomUUID()}>
     { rotationArray && rotationArray.map((row) => {
-      return <div className="flex flex-row justify-center" key={crypto.randomUUID()}>
+      return <div className="flex flex-row justify-center bg-board-bg overflow-hidden" key={crypto.randomUUID()}>
         {
           row.map((cell) => {
             const cellCol = cell === 1 ? color : "transparent"
