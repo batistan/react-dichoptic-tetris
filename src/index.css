@@ -1,5 +1,10 @@
+@font-face {
+  font-family: "Futura";
+  src: url("./assets/fonts/futura/Futura Medium.otf") format("truetype");
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Futura, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 

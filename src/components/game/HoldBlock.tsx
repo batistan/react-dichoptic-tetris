@@ -12,7 +12,7 @@ interface HoldBlockProps {
 
 export default function HoldBlock({ heldBlock, color, level, score, hiScore }: HoldBlockProps) {
   return <div className="hidden md:flex flex-col align-middle w-32 rounded-l-md p-3 h-fit bg-info-bg">
-    <p className="text-center font-mono uppercase">Held</p>
+    <p className="text-center uppercase">Held</p>
     <div className="py-3 rounded-md overflow-hidden">
       <BlockPreview block={heldBlock} color={color} />
     </div>

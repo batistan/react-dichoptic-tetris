@@ -9,3 +9,7 @@
     --color-text-bright: var(--color-primary-2);
     --color-info-bg: var(--color-neutral-6);
 }
+
+@theme {
+    --font-futura: "Futura", sans;
+}

@@ -28,7 +28,7 @@ export default function ColorSelection({ handleFallingColorChange, handleLandedC
 
   return <div className="flex flex-col justify-center gap-4 order-1 md:-order-1">
     <ColorPickContainer>
-      <span className="font-sans text-lg">Falling Block Color</span>
+      <span className="text-lg">Falling Block Color</span>
       <ColorPickerWithSwatches
         color={fallingColor}
         swatches={leftSwatches}
@@ -37,7 +37,7 @@ export default function ColorSelection({ handleFallingColorChange, handleLandedC
     </ColorPickContainer>
     <SwapButton handleSwap={handleSwap} />
     <ColorPickContainer>
-      <span>Landed Block Color</span>
+      <span className="text-lg">Landed Block Color</span>
       <ColorPickerWithSwatches
         color={landedColor}
         onChangeColor={handleLandedColorChange}
