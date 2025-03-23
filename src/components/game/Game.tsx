@@ -40,7 +40,7 @@ export default function Game({ fallingColorHex, landedColorHex }: { fallingColor
     localStorage.setItem(HIGH_SCORE_KEY, Math.max(gameState.score, +HIGH_SCORE).toString())
   }, [isOver]);
 
-  return (<div className="flex flex-row justify-start">
+  return (<div className="flex flex-row justify-start drop-shadow-md shadow-background">
     <HoldBlock heldBlock={gameState.heldBlock}
                color={fallingColorHex}
                score={gameState.score}

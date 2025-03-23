@@ -7,23 +7,69 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* custom palette */
+  --color-neutral-1: hsl(210, 36%, 96%);
+  --color-neutral-2: hsl(212, 33%, 89%);
+  --color-neutral-3: hsl(210, 31%, 80%);
+  --color-neutral-4: hsl(211, 27%, 70%);
+  --color-neutral-5: hsl(209, 23%, 60%);
+  --color-neutral-6: hsl(210, 22%, 49%);
+  --color-neutral-7: hsl(209, 28%, 39%);
+  --color-neutral-8: hsl(209, 34%, 30%);
+  --color-neutral-9: hsl(211, 39%, 23%);
+  --color-neutral-10: hsl(209, 61%, 16%);
+
+  --color-primary-1: hsl(205, 100%, 21%);
+  --color-primary-2: hsl(205, 87%, 29%);
+  --color-primary-3: hsl(205, 82%, 33%);
+  --color-primary-4: hsl(205, 76%, 39%);
+  --color-primary-5: hsl(205, 67%, 45%);
+  --color-primary-6: hsl(205, 65%, 55%);
+  --color-primary-7: hsl(205, 74%, 65%);
+  --color-primary-8: hsl(205, 84%, 74%);
+  --color-primary-9: hsl(205, 97%, 85%);
+  --color-primary-10: hsl(205, 79%, 92%);
 }
+
+
+:root[class~='dark'] {
+  --color-neutral-1: hsl(209, 61%, 16%);
+  --color-neutral-2: hsl(211, 39%, 23%);
+  --color-neutral-3: hsl(209, 34%, 30%);
+  --color-neutral-4: hsl(209, 28%, 39%);
+  --color-neutral-5: hsl(210, 22%, 49%);
+  --color-neutral-6: hsl(209, 23%, 60%);
+  --color-neutral-7: hsl(211, 27%, 70%);
+  --color-neutral-8: hsl(210, 31%, 80%);
+  --color-neutral-9: hsl(212, 33%, 89%);
+  --color-neutral-10: hsl(210, 36%, 96%);
+
+  --color-primary-1: hsl(205, 79%, 92%);
+  --color-primary-2: hsl(205, 97%, 85%);
+  --color-primary-3: hsl(205, 84%, 74%);
+  --color-primary-4: hsl(205, 74%, 65%);
+  --color-primary-5: hsl(205, 65%, 55%);
+  --color-primary-6: hsl(205, 67%, 45%);
+  --color-primary-7: hsl(205, 76%, 39%);
+  --color-primary-8: hsl(205, 82%, 33%);
+  --color-primary-9: hsl(205, 87%, 29%);
+  --color-primary-10: hsl(205, 100%, 21%);
+}
+
 
 a {
   font-weight: 500;
   text-decoration: inherit;
 }
 
-body {
+body, html, #root {
+  background-color: var(--color-neutral-1);
   margin: 0;
-  min-height: 100vh;
+  height: 100%;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

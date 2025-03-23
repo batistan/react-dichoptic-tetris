@@ -2,6 +2,7 @@ import {useState} from "react";
 import ColorPickerWithSwatches from "./ColorPickerWithSwatches.tsx";
 import {blueSwatches, redSwatches} from "../../swatches.ts";
 import "./ColorSelection.css"
+import SwapButton from "./SwapButton.tsx";
 
 type HexColor = string;
 
@@ -24,21 +25,18 @@ export default function ColorSelection({ fallingColor, landedColor, handleFallin
     handleLandedColorChange(fallingColor)
   }
 
-  return <div className="flex flex-col justify-around gap-4 order-1 md:-order-1">
+  return <div className="flex flex-col justify-center gap-4 order-1 md:-order-1">
     <div className="flex flex-col">
-      <p>Falling Block Color</p>
+      <span>Falling Block Color</span>
       <ColorPickerWithSwatches
         color={fallingColor}
         swatches={leftSwatches}
         onChangeColor={handleFallingColorChange}
       />
     </div>
-    <button
-      onClick={handleSwap}>
-      ⇔ Swap
-    </button>
-    <div>
-      <p>Landed Block Color</p>
+    <SwapButton handleSwap={handleSwap} />
+    <div className="flex flex-col">
+      <span>Landed Block Color</span>
       <ColorPickerWithSwatches
         color={landedColor}
         onChangeColor={handleLandedColorChange}

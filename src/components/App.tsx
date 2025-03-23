@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import '../styles/App.css'
+import "./app.css"
 import {blueSwatches, redSwatches} from "../swatches.ts";
 import Game from "./game/Game.tsx";
 import ColorSelection from "./colorselection/ColorSelection.tsx";
 import {Header} from "./Header.tsx";
 
 const containerClasses = [
-  "h-full",
   "flex",
   "items-center",
   "gap-2",
+  "mt-4",
   "flex-col",
   "md:flex-row",
   "md:align-middle",
@@ -21,7 +21,7 @@ function App() {
   const [landedColor, setLandedColor] = useState<string>(blueSwatches[blueSwatches.length / 2])
 
   return (
-    <>
+    <div className="h-full box-border bg-background text-text">
       <Header />
       <div className={containerClasses}>
         <ColorSelection
@@ -32,7 +32,7 @@ function App() {
         />
         <Game fallingColorHex={fallingColor} landedColorHex={landedColor} />
       </div>
-    </>
+    </div>
   )
 }
 
