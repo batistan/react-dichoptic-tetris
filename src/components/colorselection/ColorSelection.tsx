@@ -1,20 +1,21 @@
-import {useState} from "react";
+import {ReactNode, useContext, useState} from "react";
 import ColorPickerWithSwatches from "./ColorPickerWithSwatches.tsx";
 import {blueSwatches, redSwatches} from "../../swatches.ts";
 import "./ColorSelection.css"
 import SwapButton from "./SwapButton.tsx";
+import {settingsContext} from "../SettingsContext.ts";
 
 type HexColor = string;
 
 interface ColorSelectionProps {
-  fallingColor: HexColor;
-  landedColor: HexColor;
   handleFallingColorChange: (s: HexColor) => void;
   handleLandedColorChange: (s: HexColor) => void;
 }
 
-export default function ColorSelection({ fallingColor, landedColor, handleFallingColorChange, handleLandedColorChange }: ColorSelectionProps) {
+export default function ColorSelection({ handleFallingColorChange, handleLandedColorChange }: ColorSelectionProps) {
   const [fallingColorOnLeft, setFallingColorOnLeft] = useState(true);
+
+  const { fallingColorHex: fallingColor, landedColorHex: landedColor } = useContext(settingsContext)
 
   const leftSwatches = fallingColorOnLeft ? redSwatches : blueSwatches
   const rightSwatches = fallingColorOnLeft ? blueSwatches : redSwatches
@@ -26,22 +27,29 @@ export default function ColorSelection({ fallingColor, landedColor, handleFallin
   }
 
   return <div className="flex flex-col justify-center gap-4 order-1 md:-order-1">
-    <div className="flex flex-col">
-      <span>Falling Block Color</span>
+    <ColorPickContainer>
+      <span className="font-sans text-lg">Falling Block Color</span>
       <ColorPickerWithSwatches
         color={fallingColor}
         swatches={leftSwatches}
         onChangeColor={handleFallingColorChange}
       />
-    </div>
+    </ColorPickContainer>
     <SwapButton handleSwap={handleSwap} />
-    <div className="flex flex-col">
+    <ColorPickContainer>
       <span>Landed Block Color</span>
       <ColorPickerWithSwatches
         color={landedColor}
         onChangeColor={handleLandedColorChange}
         swatches={rightSwatches}
       />
-    </div>
+    </ColorPickContainer>
   </div>
+}
+
+function ColorPickContainer({ children }: { children: ReactNode }) {
+  return <div className="flex flex-col bg-board-bg p-4 rounded-md shadow-lg">
+    {children}
+  </div>
+
 }

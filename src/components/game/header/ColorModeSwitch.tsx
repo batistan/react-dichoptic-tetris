@@ -1,5 +1,4 @@
-import useDarkMode from "./useDarkMode.tsx";
-
+import useDarkMode from "../../useDarkMode.tsx";
 
 function Icon({ isDark }: { isDark: boolean }) {
   // https://heroicons.com/
@@ -23,7 +22,7 @@ function Icon({ isDark }: { isDark: boolean }) {
 export default function ColorModeSwitch() {
   const [theme, toggleTheme] = useDarkMode();
 
-  return <button onClick={toggleTheme}>
+  return <button className="cursor-pointer" onClick={toggleTheme}>
     <Icon isDark={theme === "dark"} />
   </button>
 }

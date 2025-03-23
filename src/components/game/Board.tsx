@@ -42,7 +42,7 @@ export default function Board({ gameState, fallingColorHex, landedColorHex }: Bo
   const fallingBlockPosition = gameState.currentBlockPosition;
   const currentBlockRotation = getRotationArray(gameState.nextBlocks[0]);
 
-  return <div className="w-64 h-fit rounded-bl-md overflow-hidden bg-board-bg">
+  return <div className="w-64 h-fit rounded-md md:rounded-none md:rounded-bl-md overflow-hidden bg-board-bg">
     { gameState.isPaused ?
       <p className="shadow">Paused</p>
       : board.rows.map((row, rowIndex) => {

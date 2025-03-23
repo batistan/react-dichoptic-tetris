@@ -1,10 +1,11 @@
 import Board from "./Board.tsx";
 import Info from "./Info.tsx";
-import {useEffect, useReducer, useRef} from "react";
+import {useContext, useEffect, useReducer, useRef} from "react";
 import {calculateLevel, GameStateAction, getNextGameState, initialGameState} from "./logic/GameState.ts";
 import "./game.css"
 import useKeyboardControls from "./useKeyboardControls.ts";
 import HoldBlock from "./HoldBlock.tsx";
+import {settingsContext} from "../SettingsContext.ts";
 
 const TARGET_FPS: number = 60;
 // https://listfist.com/list-of-tetris-levels-by-speed-nes-ntsc-vs-pal
@@ -13,7 +14,9 @@ const FRAMES_PER_TICK_PER_LEVEL = 48;
 const HIGH_SCORE_KEY = "highScore";
 const HIGH_SCORE = (localStorage && localStorage.getItem(HIGH_SCORE_KEY)) ?? "0";
 
-export default function Game({ fallingColorHex, landedColorHex }: { fallingColorHex: string; landedColorHex: string }) {
+export default function Game() {
+  const { fallingColorHex, landedColorHex } = useContext(settingsContext);
+
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
