@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import "./app.css"
 import Game from "./game/Game.tsx";
-import ColorSelection from "./colorselection/ColorSelection.tsx";
+import ColorSelection from "./color-selection/ColorSelection.tsx";
 import {Header} from "./game/header/Header.tsx";
 import {defaultSettings, Settings, settingsContext} from "./SettingsContext.ts";
 
@@ -19,6 +19,7 @@ const containerClasses = [
 function App() {
 
   const [settings, setSettings] = useState<Settings>(defaultSettings);
+  const [inputDisabled, setInputDisabled] = useState<boolean>(false);
 
   useEffect(() => {
     localStorage.setItem("settings", btoa(JSON.stringify(settings)))
@@ -34,14 +35,26 @@ function App() {
 
   return (
     <div className="h-full box-border bg-background text-text">
-      <settingsContext.Provider value={{ ...settings, updateSettings: (s: Settings) => {setSettings(s); return s} }}>
-        <Header />
+      <settingsContext.Provider value={
+        { ...settings, updateSettings: (s: Settings) => { setSettings(s); return s } }
+      }>
+        <Header
+          handleModalOpen={() => {
+            // don't capture input while a modal is open
+            console.log("Opening modal.")
+            setInputDisabled(true);
+          }}
+          handleModalClose={() => {
+            console.log("Closing modal.")
+            setInputDisabled(false);
+          }}
+        />
         <div className={containerClasses}>
           <ColorSelection
             handleFallingColorChange={handleFallingColorChange}
             handleLandedColorChange={handleLandedColorChange}
           />
-          <Game />
+          <Game inputDisabled={inputDisabled} />
         </div>
       </settingsContext.Provider>
     </div>

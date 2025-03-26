@@ -14,7 +14,7 @@ const FRAMES_PER_TICK_PER_LEVEL = 48;
 const HIGH_SCORE_KEY = "highScore";
 const HIGH_SCORE = (localStorage && localStorage.getItem(HIGH_SCORE_KEY)) ?? "0";
 
-export default function Game() {
+export default function Game({ inputDisabled }: { inputDisabled: boolean }) {
   const { fallingColorHex } = useContext(settingsContext);
 
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
@@ -24,7 +24,7 @@ export default function Game() {
 
   const level = calculateLevel(linesCleared)
 
-  useKeyboardControls(dispatch)
+  useKeyboardControls(dispatch, inputDisabled)
 
   useEffect(() => {
     if (!isOver && !isPaused) {

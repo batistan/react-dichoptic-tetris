@@ -1,4 +1,4 @@
-import {ReactNode, useEffect, useRef} from "react";
+import {ReactNode, useEffect, useRef, PointerEvent} from "react";
 
 interface ModalProps {
   children: ReactNode;
@@ -10,36 +10,36 @@ interface ModalProps {
 export default function Modal({children, title, isOpen, handleClose}: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-  useEffect(() => {
-    const dialog = dialogRef.current
+  function closeDialog() {
+    handleClose();
+    dialogRef.current?.close();
+  }
 
-    const handlePointer = (e: PointerEvent) => {
-      // close modal on click outside its containing div (which should occupy all the dialog's visible area)
-      // need to be a little weird here since a dialog opened in modal mode captures all clicks in the viewport
-      if ((e.target as Element)?.closest(".dialog-modal") === null) {
-        dialog?.close()
-        handleClose()
-      }
-    }
+  useEffect(() => {
+    const currentRef = dialogRef.current;
 
     if (isOpen) {
-      dialog?.showModal()
-      dialog?.addEventListener("pointerdown", handlePointer)
-    } else {
-      dialog?.removeEventListener("pointerdown", handlePointer)
-      dialog?.close();
-    }
-
-    return () => {
-      dialog?.removeEventListener("pointerdown", handlePointer);
-      dialog?.close();
+      currentRef?.showModal();
     }
   }, [isOpen, handleClose]);
 
-  return <dialog ref={dialogRef} className="absolute  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-md">
+  function handlePointerDown(e: PointerEvent<HTMLDialogElement>) {
+    // close modal on click outside its containing div (which should occupy all the dialog's visible area)
+    // need to be a little weird here since a dialog opened in modal mode captures all clicks in the viewport
+    if ((e.target as Element)?.closest(".dialog-modal") === null) {
+      closeDialog();
+    }
+  }
+
+  return <dialog
+    ref={dialogRef}
+    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-md"
+    onPointerDown={handlePointerDown}
+    onClose={handleClose}
+  >
     <div className="dialog-modal flex flex-col bg-header">
       <div className="flex flex-row-reverse justify-between w-full p-1 border-b-1 border-background">
-        <button className="w-fit hover:text-button-hover-text text-text text-center hover:bg-button-hover rounded-md p-2 aspect-square" onClick={handleClose}><CloseIcon /></button>
+        <button className="w-fit hover:text-button-hover-text text-text text-center hover:bg-button-hover rounded-md p-2 aspect-square" onClick={closeDialog}><CloseIcon /></button>
         <h2 className="text-center text-xl text-text pt-1 pl-2">{title}</h2>
       </div>
       {children}
