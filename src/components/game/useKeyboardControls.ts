@@ -43,6 +43,9 @@ export function handleKeyDown(
     case "NumpadArrowUp":
       dispatch(GameStateAction.ROTATE_CLOCKWISE)
       return true;
+    case "KeyC":
+      dispatch(GameStateAction.ROTATE_ANTI_CLOCKWISE)
+      return true;
     default:
       return false;
   }
@@ -62,8 +65,6 @@ export default function useKeyboardControls(
 
     if (!inputDisabled) {
       window.addEventListener("keydown", eventHandler)
-    } else {
-      dispatch(GameStateAction.PAUSE)
     }
 
     return () => { window.removeEventListener("keydown", eventHandler) }

@@ -27,6 +27,12 @@ export default function Game({ inputDisabled }: { inputDisabled: boolean }) {
   useKeyboardControls(dispatch, inputDisabled)
 
   useEffect(() => {
+    if (inputDisabled && !gameState.isPaused) {
+      dispatch(GameStateAction.PAUSE)
+    }
+  }, [inputDisabled, gameState.isPaused]);
+
+  useEffect(() => {
     if (!isOver && !isPaused) {
       const millisPerTick = (Math.floor(FRAMES_PER_TICK_PER_LEVEL / level) / TARGET_FPS) * 1000
       intervalRef.current = setInterval(() => {
