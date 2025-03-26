@@ -1,6 +1,6 @@
 import ColorModeSwitch from "./ColorModeSwitch.tsx";
 import Settings from "./Settings.tsx";
-import Tutorial from "../Tutorial.tsx";
+import Tutorial from "./Tutorial.tsx";
 import Github from "./Github.tsx";
 
 export function Header() {

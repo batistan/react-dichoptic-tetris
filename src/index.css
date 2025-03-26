@@ -62,12 +62,6 @@
   --color-primary-10: hsl(205, 100%, 21%);
 }
 
-
-a {
-  font-weight: 500;
-  text-decoration: inherit;
-}
-
 body, html, #root {
   background-color: var(--color-neutral-1);
   margin: 0;

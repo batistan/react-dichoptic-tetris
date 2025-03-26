@@ -34,6 +34,7 @@ export function initialGameState(): GameState {
     // nextBlocks[0] is current block, remaining blocks shown in right panel
     nextBlocks: initBlocks,
     currentBlockPosition: initBlockCoordinates,
+    // only needs to be updated on moving left or right, or on rotation
     ghostBlockPosition: initGhostCoords,
     heldBlock: null,
     canHold: true,
@@ -62,7 +63,11 @@ export function getNextGameState(prevState: GameState, action: GameStateAction):
   const currentBlock = prevState.nextBlocks[0]
   switch (action) {
     case GameStateAction.PAUSE:
-      return {...prevState, isPaused: !prevState.isPaused};
+      if (prevState.isOver) {
+        return prevState;
+      } else {
+        return {...prevState, isPaused: !prevState.isPaused};
+      }
     case GameStateAction.RESTART:
       return initialGameState()
     case GameStateAction.MOVE_LEFT: {

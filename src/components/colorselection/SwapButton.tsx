@@ -3,7 +3,7 @@ interface SwapButtonProps {
 }
 
 export default function SwapButton({handleSwap}: SwapButtonProps) {
-  return <button onClick={handleSwap} className="w-1/2 py-2 shadow-xl rounded-md bg-board-bg hover:bg-info-bg">
+  return <button onClick={handleSwap} className="w-1/2 py-2 shadow-xl rounded-md bg-info-bg hover:bg-button-hover text-text-dark hover:text-button-hover-text">
       <div className="flex gap-2 justify-center">
         <SwapIcon /> Swap
       </div>

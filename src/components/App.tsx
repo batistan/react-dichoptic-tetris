@@ -21,17 +21,8 @@ function App() {
   const [settings, setSettings] = useState<Settings>(defaultSettings);
 
   useEffect(() => {
-    const prevSettings = localStorage?.getItem && localStorage.getItem("settings");
-
-    if (prevSettings !== null) {
-      setSettings(JSON.parse(atob(prevSettings)))
-    }
-
-    return () => {
-      // save current settings on exit
-      localStorage.setItem("settings", btoa(JSON.stringify(settings)))
-    }
-  }, []);
+    localStorage.setItem("settings", btoa(JSON.stringify(settings)))
+  }, [settings]);
 
   const handleFallingColorChange = (s: string) => {
     setSettings((prev) => ({ ...prev, fallingColorHex: s }))
@@ -43,7 +34,7 @@ function App() {
 
   return (
     <div className="h-full box-border bg-background text-text">
-      <settingsContext.Provider value={settings}>
+      <settingsContext.Provider value={{ ...settings, updateSettings: (s: Settings) => {setSettings(s); return s} }}>
         <Header />
         <div className={containerClasses}>
           <ColorSelection

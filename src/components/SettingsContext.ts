@@ -5,12 +5,16 @@ export interface Settings {
   showGhost: boolean;
   fallingColorHex: string;
   landedColorHex: string;
+  updateSettings: (settings: Settings) => Settings;
 }
 
-export const defaultSettings = {
+const savedSettings: Settings = localStorage?.getItem && JSON.parse(atob(localStorage.getItem("settings") ?? ""))
+
+export const defaultSettings = savedSettings ?? {
   showGhost: true,
   fallingColorHex: redSwatches[redSwatches.length / 2],
-  landedColorHex: blueSwatches[blueSwatches.length / 2]
+  landedColorHex: blueSwatches[blueSwatches.length / 2],
+  updateSettings: (settings: Settings) => settings, // no-op
 }
 
 export const settingsContext = createContext<Settings>(defaultSettings);

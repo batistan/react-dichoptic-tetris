@@ -15,7 +15,7 @@ const HIGH_SCORE_KEY = "highScore";
 const HIGH_SCORE = (localStorage && localStorage.getItem(HIGH_SCORE_KEY)) ?? "0";
 
 export default function Game() {
-  const { fallingColorHex, landedColorHex } = useContext(settingsContext);
+  const { fallingColorHex } = useContext(settingsContext);
 
   const [gameState, dispatch] = useReducer(getNextGameState, initialGameState())
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -50,10 +50,8 @@ export default function Game() {
                hiScore={+HIGH_SCORE}
                level={level}
     />
-    <Board
-      gameState={gameState}
-      fallingColorHex={fallingColorHex}
-      landedColorHex={landedColorHex}
+    <Board gameState={gameState}
+           handleRestart={() => dispatch(GameStateAction.RESTART)}
     />
     <Info blockColor={fallingColorHex}
           nextBlocks={gameState.nextBlocks.slice(1)}
