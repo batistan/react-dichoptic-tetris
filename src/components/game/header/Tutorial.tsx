@@ -36,6 +36,7 @@ export default function Tutorial(
           <p><KeyDisplay button="D"/> / <KeyDisplay button="→" /> &ndash; Move Right</p>
           <p><KeyDisplay button="W"/> / <KeyDisplay button="↑" /> &ndash; Rotate Clockwise</p>
           <p><KeyDisplay button="S"/> / <KeyDisplay button="↓" /> &ndash; Move Down</p>
+          <p><KeyDisplay button="C"/> &ndash; Rotate Counter-Clockwise</p>
         </div>
         <div className="flex flex-col gap-2">
           <p><KeyDisplay button="Shift" /> &ndash; Hold Block</p>
