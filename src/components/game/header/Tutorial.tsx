@@ -6,7 +6,7 @@ export default function Tutorial() {
   const [open, setOpen] = useState(false);
 
   return <div>
-    <button onClick={() => setOpen(true)}><InfoIcon /></button>
+    <button className="cursor-pointer" onClick={() => setOpen(true)}><InfoIcon /></button>
     {createPortal(
       <Modal isOpen={open} title="About" handleClose={() => setOpen(false)}>
         <div className="flex flex-col gap-2 p-3 text-text">

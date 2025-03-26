@@ -1,9 +1,11 @@
 export default function Github() {
-  return <a href="https://github.com/batistan/react-dichoptic-tetris"
-            target="_blank"
-            rel="noopener noreferrer">
-    <Icon />
-  </a>
+  return <div>
+    <a href="https://github.com/batistan/react-dichoptic-tetris"
+       target="_blank"
+       rel="noopener noreferrer">
+      <Icon />
+    </a>
+  </div>
 }
 
 // https://github.com/logos

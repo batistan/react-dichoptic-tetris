@@ -33,7 +33,7 @@ export default function Settings() {
   }
 
   return <div>
-    <button onClick={handleOpen}><Cog /></button>
+    <button className="cursor-pointer" onClick={handleOpen}><Cog /></button>
     {createPortal(<Modal isOpen={open} title="Settings" handleClose={() => setOpen(false)}>
       <form method="dialog" className="p-3 drop-shadow-md">
         <div className="flex flex-col gap-2 p-3 text-text">

@@ -63,7 +63,7 @@
 }
 
 body, html, #root {
-  background-color: var(--color-neutral-1);
+  background-color: var(--color-neutral-3);
   margin: 0;
   height: 100%;
 }

@@ -5,7 +5,7 @@ function Icon({ isDark }: { isDark: boolean }) {
   return <svg xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={1.8}
+              strokeWidth={1.5}
               stroke="currentColor"
               className="size-8"
   >
@@ -22,7 +22,9 @@ function Icon({ isDark }: { isDark: boolean }) {
 export default function ColorModeSwitch() {
   const [theme, toggleTheme] = useDarkMode();
 
-  return <button className="cursor-pointer" onClick={toggleTheme}>
-    <Icon isDark={theme === "dark"} />
-  </button>
+  return <div>
+    <button className="cursor-pointer" onClick={toggleTheme}>
+      <Icon isDark={theme === "dark"} />
+    </button>
+  </div>
 }
