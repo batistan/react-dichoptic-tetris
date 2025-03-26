@@ -4,6 +4,5 @@
 
 .cell {
     width: 10vh;
-    margin: -1px;
     aspect-ratio: 1 / 1;
 }

@@ -34,7 +34,7 @@ function getCellColor(
 ): string {
   return isFallingBlock ? fallingColorHex : (
     isLandedBlock ? landedColorHex : (
-      (isGhostBlock && showGhostBlock) ? "gray" : "transparent"
+      (isGhostBlock && showGhostBlock) ? "rgba(50%, 50%, 50%, 50%)" : "transparent"
     )
   );
 }
