@@ -49,7 +49,8 @@ export function handleKeyDown(
 }
 
 export default function useKeyboardControls(
-  dispatch: Dispatch<GameStateAction>
+  dispatch: Dispatch<GameStateAction>,
+  inputDisabled: boolean
 ): void {
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
@@ -59,8 +60,12 @@ export default function useKeyboardControls(
       }
     }
 
-    window.addEventListener("keydown", eventHandler)
+    if (!inputDisabled) {
+      window.addEventListener("keydown", eventHandler)
+    } else {
+      dispatch(GameStateAction.PAUSE)
+    }
 
     return () => { window.removeEventListener("keydown", eventHandler) }
-  }, [dispatch]);
+  }, [dispatch, inputDisabled]);
 }

@@ -1,4 +1,4 @@
-import useDarkMode from "../../useDarkMode.tsx";
+import useDarkMode from "../../useDarkMode.ts";
 
 function Icon({ isDark }: { isDark: boolean }) {
   // https://heroicons.com/

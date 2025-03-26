@@ -1,18 +1,14 @@
 import {settingsContext} from "../../SettingsContext.ts";
 import {ReactNode, useContext, useState} from "react";
-import Modal from "../Modal.tsx";
-import {createPortal} from "react-dom";
+import HeaderPopup from "./HeaderPopup.tsx";
 
-export default function Settings() {
+export default function Settings(
+  { handleModalOpen, handleModalClose }: { handleModalOpen: () => void, handleModalClose: () => void }
+) {
   const settings = useContext(settingsContext);
 
-  const [open, setOpen] = useState(false);
   const [fallingColorHex, setFallingColorHex] = useState(settings.fallingColorHex);
   const [landedColorHex, setLandedColorHex] = useState(settings.landedColorHex);
-
-  function handleOpen() {
-    setOpen(true);
-  }
 
   function toggleGhost() {
     settings.updateSettings({...settings, showGhost: !settings.showGhost});
@@ -32,24 +28,26 @@ export default function Settings() {
     }
   }
 
-  return <div>
-    <button className="cursor-pointer" onClick={handleOpen}><Cog /></button>
-    {createPortal(<Modal isOpen={open} title="Settings" handleClose={() => setOpen(false)}>
-      <form method="dialog" className="p-3 drop-shadow-md">
-        <div className="flex flex-col gap-2 p-3 text-text">
-          <FormField label="Show Ghost?">
-            <input name="showGhost" type="checkbox" className="w-5 bg-background" checked={settings.showGhost} onChange={toggleGhost}/>
-          </FormField>
-          <FormField label="Falling Block Color (Hex)">
-            <input name="fallingColor" type="text" className="w-1/5 bg-background px-1 text-right" value={fallingColorHex} onChange={(e) => setFallColor(e.target.value)}/>
-          </FormField>
-          <FormField label="Landed Block Color (Hex)">
-            <input name="landedColor" type="text" className="w-1/5 bg-background px-1 text-right" value={landedColorHex} onChange={(e) => setLandedColor(e.target.value)}/>
-          </FormField>
-        </div>
-      </form>
-    </Modal>, document.body)}
-  </div>
+  return <HeaderPopup
+    modalTitle="Settings"
+    handleModalOpen={handleModalOpen}
+    handleModalClose={handleModalClose}
+    icon={<Cog/>}
+  >
+    <form method="dialog" className="p-3 drop-shadow-md">
+      <div className="flex flex-col gap-2 p-3 text-text">
+        <FormField label="Show Ghost?">
+          <input name="showGhost" type="checkbox" className="w-5 bg-background" checked={settings.showGhost} onChange={toggleGhost}/>
+        </FormField>
+        <FormField label="Falling Block Color (Hex)">
+          <input name="fallingColor" type="text" className="w-1/5 bg-background px-1 text-right" value={fallingColorHex} onChange={(e) => setFallColor(e.target.value)}/>
+        </FormField>
+        <FormField label="Landed Block Color (Hex)">
+          <input name="landedColor" type="text" className="w-1/5 bg-background px-1 text-right" value={landedColorHex} onChange={(e) => setLandedColor(e.target.value)}/>
+        </FormField>
+      </div>
+    </form>
+  </HeaderPopup>
 }
 
 function FormField({ label, children }: { label: string; children: ReactNode }) {
