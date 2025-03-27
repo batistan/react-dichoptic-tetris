@@ -8,7 +8,7 @@ export interface Settings {
   updateSettings: (settings: Settings) => Settings;
 }
 
-const savedSettings: Settings = localStorage?.getItem && JSON.parse(atob(localStorage.getItem("settings") ?? ""))
+const savedSettings: Settings | null = localStorage?.getItem("settings") && JSON.parse(atob(localStorage.getItem("settings")!))
 
 export const defaultSettings = savedSettings ?? {
   showGhost: true,
