@@ -4,9 +4,9 @@ import BlockPreview from "./BlockPreview.tsx";
 export default function NextBlocks({blocks, color}: {blocks: Block[], color: string}) {
   return <div className="p-3">
     <p className="text-text-dark text-center uppercase">Next</p>
-    <div className="flex flex-col overflow-hidden rounded-md">
+    <div className="flex flex-col overflow-hidden m-1 rounded-md">
       { blocks.map(block => {
-        return <div className="py-1" key={crypto.randomUUID()}>
+        return <div className="bg-board-bg p-2" key={crypto.randomUUID()}>
           <BlockPreview block={block} color={color} />
         </div>
       })
