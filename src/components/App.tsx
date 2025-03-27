@@ -41,11 +41,9 @@ function App() {
         <Header
           handleModalOpen={() => {
             // don't capture input while a modal is open
-            console.log("Opening modal.")
             setInputDisabled(true);
           }}
           handleModalClose={() => {
-            console.log("Closing modal.")
             setInputDisabled(false);
           }}
         />
