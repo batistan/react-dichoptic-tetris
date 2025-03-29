@@ -109,7 +109,7 @@ export default function useControls(
         { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
       )
 
-      if (touchType == "tap" && event.touches.length > 1) {
+      if (touchType == "tap" && event.changedTouches.length > 1) {
         handleTouch("double", dispatch)
       } else {
         handleTouch(touchType, dispatch)
