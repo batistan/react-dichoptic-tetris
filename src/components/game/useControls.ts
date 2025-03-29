@@ -57,7 +57,7 @@ function handleTouch(
 ) {
   switch (touch) {
     case "down":
-      dispatch(GameStateAction.MOVE_DOWN);
+      dispatch(GameStateAction.HARD_DROP);
       break;
     case "up":
       dispatch(GameStateAction.ROTATE_CLOCKWISE);
@@ -70,9 +70,6 @@ function handleTouch(
       break;
     case "tap":
       dispatch(GameStateAction.PAUSE);
-      break;
-    case "double":
-      dispatch(GameStateAction.HARD_DROP);
       break;
   }
 }
@@ -107,11 +104,7 @@ export default function useControls(
         { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
       )
 
-      if (touchType == "tap" && event.changedTouches.length > 1) {
-        handleTouch("double", dispatch)
-      } else {
-        handleTouch(touchType, dispatch)
-      }
+      handleTouch(touchType, dispatch)
       setTouchStartCoords(null)
 
       event.preventDefault()
@@ -136,7 +129,7 @@ interface Coordinates {
   y: number;
 }
 
-type SwipeType = "down" | "up" | "left" | "right" | "tap" | "double"
+type SwipeType = "down" | "up" | "left" | "right" | "tap"
 
 const MIN_SWIPE_DISTANCE_PX = 5;
 

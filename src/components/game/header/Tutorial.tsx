@@ -35,12 +35,12 @@ export default function Tutorial(
           <p><KeyDisplay button="A"/> / <KeyDisplay button="←" /> &ndash; Move Left</p>
           <p><KeyDisplay button="D"/> / <KeyDisplay button="→" /> &ndash; Move Right</p>
           <p><KeyDisplay button="W"/> / <KeyDisplay button="↑" /> &ndash; Rotate Clockwise</p>
-          <p><KeyDisplay button="S"/> / <KeyDisplay button="↓" /> &ndash; Move Down</p>
+          <p><KeyDisplay button="S"/> / <KeyDisplay button="↓" /> &ndash; Move Down / Hard Drop (Mobile)</p>
           <p><KeyDisplay button="C"/> &ndash; Rotate Counter-Clockwise</p>
         </div>
         <div className="flex flex-col gap-2">
           <p><KeyDisplay button="Shift" /> &ndash; Hold Block</p>
-          <p><KeyDisplay button="Space" /> / <KeyDisplay button={"Double Tap"} /> &ndash; Hard Drop</p>
+          <p><KeyDisplay button="Space" /> &ndash; Hard Drop</p>
         </div>
       </div>
     </div>
