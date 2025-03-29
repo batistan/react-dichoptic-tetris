@@ -31,7 +31,7 @@ export default function Tutorial(
       <h3 className="pt-2 text-lg border-t-1 border-background">Controls</h3>
       <div className="flex flex-row gap-2">
         <div className="flex flex-col gap-3">
-          <p><KeyDisplay button="ESC"/> &ndash; Pause / Resume</p>
+          <p><KeyDisplay button="ESC"/> / <KeyDisplay button={"Tap"}/> &ndash; Pause / Resume</p>
           <p><KeyDisplay button="A"/> / <KeyDisplay button="←" /> &ndash; Move Left</p>
           <p><KeyDisplay button="D"/> / <KeyDisplay button="→" /> &ndash; Move Right</p>
           <p><KeyDisplay button="W"/> / <KeyDisplay button="↑" /> &ndash; Rotate Clockwise</p>
@@ -40,7 +40,7 @@ export default function Tutorial(
         </div>
         <div className="flex flex-col gap-2">
           <p><KeyDisplay button="Shift" /> &ndash; Hold Block</p>
-          <p><KeyDisplay button="Space" /> &ndash; Hard Drop</p>
+          <p><KeyDisplay button="Space" /> / <KeyDisplay button={"Double Tap"} /> &ndash; Hard Drop</p>
         </div>
       </div>
     </div>

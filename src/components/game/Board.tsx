@@ -44,7 +44,7 @@ export default function Board({ gameState, handleRestart }: BoardProps) {
   const fallingBlockPosition = gameState.currentBlockPosition;
   const currentBlockRotation = getRotationArray(gameState.nextBlocks[0]);
 
-  return <div id="board" className="relative w-64 h-fit rounded-md md:rounded-none md:rounded-bl-md overflow-hidden bg-board-bg">
+  return <div id="board" className="touch-none relative w-64 h-fit rounded-md md:rounded-none md:rounded-bl-md overflow-hidden bg-board-bg">
     <GameOverlay isOpen={gameState.isPaused}>
       <p className="text-center">Paused!</p>
       <p className="text-center">(ESC to resume)</p>
