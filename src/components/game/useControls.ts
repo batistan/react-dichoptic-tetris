@@ -55,7 +55,6 @@ function handleTouch(
   touch: SwipeType,
   dispatch: Dispatch<GameStateAction>
 ) {
-  console.log(`Swiped ${touch}`)
   switch (touch) {
     case "down":
       dispatch(GameStateAction.MOVE_DOWN);
@@ -103,7 +102,6 @@ export default function useControls(
     const touchEndHandler = (event: TouchEvent) => {
       if (touchStartCoords === null) return
 
-      console.log(event.touches)
       const touchType = swipeDir(
         touchStartCoords,
         { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
