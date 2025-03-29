@@ -3,7 +3,7 @@ import Info from "./Info.tsx";
 import {useContext, useEffect, useReducer, useRef} from "react";
 import {calculateLevel, GameStateAction, getNextGameState, initialGameState} from "./logic/GameState.ts";
 import "./game.css"
-import useKeyboardControls from "./useKeyboardControls.ts";
+import useControls from "./useControls.ts";
 import HoldBlock from "./HoldBlock.tsx";
 import {settingsContext} from "../SettingsContext.ts";
 
@@ -24,7 +24,7 @@ export default function Game({ inputDisabled }: { inputDisabled: boolean }) {
 
   const level = calculateLevel(linesCleared)
 
-  useKeyboardControls(dispatch, inputDisabled)
+  useControls(dispatch, inputDisabled)
 
   useEffect(() => {
     if (inputDisabled && !gameState.isPaused) {
