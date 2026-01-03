@@ -1,4 +1,5 @@
 import {HexColorPicker} from "react-colorful";
+import {useRef} from "react";
 
 interface ColorPickerProps {
   color: string,
@@ -12,8 +13,19 @@ export default function ColorPickerWithSwatches({color, onChangeColor, swatches}
     onChangeColor(color)
   }
 
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  function blur() {
+    if (wrapperRef.current?.contains(document.activeElement)) {
+      (document.activeElement as HTMLElement).blur()
+    }
+  }
+
   return <div>
-    <div onPointerUp={() => (document.activeElement as HTMLElement)?.blur()}>
+    <div ref={wrapperRef}
+         onPointerUp={blur}
+         onPointerCancel={blur}
+    >
       <HexColorPicker color={color} onChange={onChangeColor} />
     </div>
     <div className="flex flex-row flex-wrap">
