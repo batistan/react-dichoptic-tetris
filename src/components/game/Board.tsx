@@ -3,6 +3,7 @@ import {getRotationArray, RotationArray} from "./logic/Blocks.ts";
 import {Coordinates} from "./logic/Board.ts";
 import {ReactNode, useContext} from "react";
 import {settingsContext} from "../SettingsContext.ts";
+import PrimaryButton from "../common/PrimaryButton.tsx";
 
 interface BoardProps {
   gameState: GameState,
@@ -100,8 +101,6 @@ function GameOverlay({ isOpen, children }: { isOpen: boolean; children: ReactNod
 function GameOverModal({isOpen, handleRestart}: { isOpen: boolean, handleRestart: () => void }) {
   return <GameOverlay isOpen={isOpen}>
       <p>Game Over!</p>
-      <button onClick={handleRestart}
-              className="bg-info-bg text-text-dark hover:bg-button-hover hover:text-button-hover-text shadow-md rounded-md p-1"
-      >Restart</button>
+      <PrimaryButton onClick={handleRestart}>Restart</PrimaryButton>
   </GameOverlay>
 }
