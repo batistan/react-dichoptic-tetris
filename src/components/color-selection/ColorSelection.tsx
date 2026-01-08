@@ -5,20 +5,22 @@ import "./ColorSelection.css"
 import SwapButton from "./SwapButton.tsx";
 import {settingsContext} from "../SettingsContext.ts";
 
-type HexColor = string;
-
-interface ColorSelectionProps {
-  handleFallingColorChange: (s: HexColor) => void;
-  handleLandedColorChange: (s: HexColor) => void;
-}
-
-export default function ColorSelection({ handleFallingColorChange, handleLandedColorChange }: ColorSelectionProps) {
+export default function ColorSelection() {
   const [fallingColorOnLeft, setFallingColorOnLeft] = useState(true);
+  const settings = useContext(settingsContext);
 
-  const { fallingColorHex: fallingColor, landedColorHex: landedColor } = useContext(settingsContext)
+  const { fallingColorHex: fallingColor, landedColorHex: landedColor } = settings;
 
   const leftSwatches = fallingColorOnLeft ? redSwatches : blueSwatches
   const rightSwatches = fallingColorOnLeft ? blueSwatches : redSwatches
+
+  function handleFallingColorChange(color: string) {
+    settings.updateSettings({...settings, fallingColorHex: color});
+  }
+
+  function handleLandedColorChange(color: string) {
+    settings.updateSettings({...settings, landedColorHex: color});
+  }
 
   function handleSwap() {
     setFallingColorOnLeft(prev => !prev)

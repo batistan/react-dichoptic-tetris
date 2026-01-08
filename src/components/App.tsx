@@ -25,14 +25,6 @@ function App() {
     localStorage.setItem("settings", btoa(JSON.stringify(settings)))
   }, [settings]);
 
-  const handleFallingColorChange = (s: string) => {
-    setSettings((prev) => ({ ...prev, fallingColorHex: s }))
-  }
-
-  const handleLandedColorChange = (s: string) => {
-    setSettings((prev) => ({ ...prev, landedColorHex: s }))
-  }
-
   return (
     <div className="h-full box-border bg-background text-text">
       <settingsContext.Provider value={
@@ -48,10 +40,7 @@ function App() {
           }}
         />
         <div className={containerClasses}>
-          <ColorSelection
-            handleFallingColorChange={handleFallingColorChange}
-            handleLandedColorChange={handleLandedColorChange}
-          />
+          <ColorSelection />
           <Game inputDisabled={inputDisabled} />
         </div>
       </settingsContext.Provider>
