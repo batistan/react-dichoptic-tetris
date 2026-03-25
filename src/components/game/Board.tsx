@@ -34,7 +34,7 @@ function getCellColor(
 ): string {
   return isFallingBlock ? fallingColorHex : (
     isLandedBlock ? landedColorHex : (
-      (isGhostBlock && showGhostBlock) ? "rgba(50%, 50%, 50%, 50%)" : "transparent"
+      (isGhostBlock && showGhostBlock) ? "rgba(60%, 60%, 60%, 60%)" : "transparent"
     )
   );
 }
@@ -44,7 +44,7 @@ export default function Board({ gameState, handleRestart }: BoardProps) {
   const fallingBlockPosition = gameState.currentBlockPosition;
   const currentBlockRotation = getRotationArray(gameState.nextBlocks[0]);
 
-  return <div id="board" className="touch-none relative w-64 h-fit rounded-md md:rounded-none md:rounded-bl-md overflow-hidden bg-board-bg">
+  return <div id="board" role="img" aria-label="Tetris game board" className="touch-none relative w-64 h-fit rounded-md md:rounded-none md:rounded-bl-md overflow-hidden bg-board-bg">
     <GameOverlay isOpen={gameState.isPaused}>
       <p className="text-center">Paused!</p>
       <p className="text-center">(ESC to resume)</p>
@@ -99,7 +99,7 @@ function GameOverlay({ isOpen, children }: { isOpen: boolean; children: ReactNod
 
 function GameOverModal({isOpen, handleRestart}: { isOpen: boolean, handleRestart: () => void }) {
   return <GameOverlay isOpen={isOpen}>
-      <p>Game Over!</p>
+      <p role="alert">Game Over!</p>
       <button onClick={handleRestart}
               className="bg-info-bg text-text-dark hover:bg-button-hover hover:text-button-hover-text shadow-md rounded-md p-1"
       >Restart</button>

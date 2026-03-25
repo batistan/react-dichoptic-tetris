@@ -49,18 +49,31 @@ export default function Game({ inputDisabled }: { inputDisabled: boolean }) {
     localStorage.setItem(HIGH_SCORE_KEY, Math.max(gameState.score, +HIGH_SCORE).toString())
   }, [isOver]);
 
-  return (<div className="flex flex-row justify-start drop-shadow-md shadow-background">
-    <HoldBlock heldBlock={gameState.heldBlock}
-               color={fallingColorHex}
-               score={gameState.score}
-               hiScore={+HIGH_SCORE}
-               level={level}
-    />
-    <Board gameState={gameState}
-           handleRestart={() => dispatch(GameStateAction.RESTART)}
-    />
-    <Info blockColor={fallingColorHex}
-          nextBlocks={gameState.nextBlocks.slice(1)}
-    />
-  </div>)
+  return (<>
+    <div aria-live="polite" className="sr-only">
+      {gameState.isOver ? "Game over." :
+       gameState.isPaused ? "Game paused." :
+       `Level ${level}, Score ${gameState.score}`}
+    </div>
+    <div className="flex flex-col items-center">
+      <div className="flex md:hidden justify-between w-64 px-3 py-1 bg-info-bg rounded-t-md text-text-dark text-sm">
+        <span>Lv {level}</span>
+        <span>Score: {gameState.score}</span>
+      </div>
+      <div className="flex flex-row justify-start drop-shadow-md shadow-background">
+        <HoldBlock heldBlock={gameState.heldBlock}
+                   color={fallingColorHex}
+                   score={gameState.score}
+                   hiScore={+HIGH_SCORE}
+                   level={level}
+        />
+        <Board gameState={gameState}
+               handleRestart={() => dispatch(GameStateAction.RESTART)}
+        />
+        <Info blockColor={fallingColorHex}
+              nextBlocks={gameState.nextBlocks.slice(1)}
+        />
+      </div>
+    </div>
+  </>)
 }

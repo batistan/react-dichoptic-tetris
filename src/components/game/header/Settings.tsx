@@ -57,7 +57,8 @@ export default function Settings(
           <input
             name="fallingColor"
             type="text"
-            className="font-mono uppercase w-1/4 bg-background px-1 text-right"
+            aria-invalid={!fallingColorHex.match(hexColorRegex) || undefined}
+            className={`font-mono uppercase w-1/4 bg-background px-1 text-right rounded-sm ${!fallingColorHex.match(hexColorRegex) ? "border-2 border-red-400" : ""}`}
             value={fallingColorHex}
             onChange={(e) => setFallColor(e.target.value)}
           />
@@ -66,7 +67,8 @@ export default function Settings(
           <input
             name="landedColor"
             type="text"
-            className="font-mono uppercase w-1/4 bg-background px-1 text-right"
+            aria-invalid={!landedColorHex.match(hexColorRegex) || undefined}
+            className={`font-mono uppercase w-1/4 bg-background px-1 text-right rounded-sm ${!landedColorHex.match(hexColorRegex) ? "border-2 border-red-400" : ""}`}
             value={landedColorHex}
             onChange={(e) => setLandedColor(e.target.value)}
           />

@@ -47,13 +47,13 @@ function App() {
             setInputDisabled(false);
           }}
         />
-        <div className={containerClasses}>
+        <main className={containerClasses}>
           <ColorSelection
             handleFallingColorChange={handleFallingColorChange}
             handleLandedColorChange={handleLandedColorChange}
           />
           <Game inputDisabled={inputDisabled} />
-        </div>
+        </main>
       </settingsContext.Provider>
     </div>
   )

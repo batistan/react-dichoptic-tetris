@@ -1,4 +1,4 @@
-import {ReactNode, useEffect, useRef, PointerEvent} from "react";
+import {ReactNode, useEffect, useId, useRef, PointerEvent} from "react";
 
 interface ModalProps {
   children: ReactNode;
@@ -9,17 +9,19 @@ interface ModalProps {
 
 export default function Modal({children, title, isOpen, handleClose}: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const titleId = useId();
 
   function closeDialog() {
     handleClose();
     dialogRef.current?.close();
+    previousFocusRef.current?.focus();
   }
 
   useEffect(() => {
-    const currentRef = dialogRef.current;
-
     if (isOpen) {
-      currentRef?.showModal();
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      dialogRef.current?.showModal();
     }
   }, [isOpen, handleClose]);
 
@@ -33,14 +35,18 @@ export default function Modal({children, title, isOpen, handleClose}: ModalProps
 
   return <dialog
     ref={dialogRef}
+    aria-labelledby={titleId}
     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-md"
     onPointerDown={handlePointerDown}
-    onClose={handleClose}
+    onClose={() => {
+      handleClose();
+      previousFocusRef.current?.focus();
+    }}
   >
     <div className="dialog-modal flex flex-col bg-header">
       <div className="flex flex-row-reverse justify-between w-full p-1 border-b-1 border-background">
-        <button className="w-fit hover:text-button-hover-text text-text text-center hover:bg-button-hover rounded-md p-2 aspect-square" onClick={closeDialog}><CloseIcon /></button>
-        <h2 className="text-center text-xl text-text pt-1 pl-2">{title}</h2>
+        <button aria-label="Close" className="w-fit hover:text-button-hover-text text-text text-center hover:bg-button-hover rounded-md p-2 aspect-square" onClick={closeDialog}><CloseIcon /></button>
+        <h2 id={titleId} className="text-center text-xl text-text pt-1 pl-2">{title}</h2>
       </div>
       {children}
     </div>
