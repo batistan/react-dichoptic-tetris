@@ -16,7 +16,7 @@ export default function HeaderPopup(
   const [open, setOpen] = useState(false);
 
   return <div>
-    <button className="cursor-pointer" onClick={() => {
+    <button className="cursor-pointer p-2" aria-label={modalTitle} onClick={() => {
     handleModalOpen()
     setOpen(true)
   }}>{icon}</button>

@@ -2,7 +2,9 @@ export default function Github() {
   return <div>
     <a href="https://github.com/batistan/react-dichoptic-tetris"
        target="_blank"
-       rel="noopener noreferrer">
+       rel="noopener noreferrer"
+       aria-label="View source on GitHub"
+       className="p-2 inline-block">
       <Icon />
     </a>
   </div>

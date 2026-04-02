@@ -33,7 +33,8 @@ export default function ColorPickerWithSwatches({color, onChangeColor, swatches}
         return <button
           key={JSON.stringify(swatch)}
           onClick={() => handleSwatchSelect(swatch)}
-          className="aspect-square w-1/12 m-1 rounded-sm"
+          aria-label={`Select color ${swatch}`}
+          className="aspect-square w-1/12 min-w-11 min-h-11 m-1 rounded-sm"
           style={{background: swatch}}
         />
       })}

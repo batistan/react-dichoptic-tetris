@@ -9,11 +9,11 @@ export function Header(
 
   return <header className="p-3 flex flex-row justify-between bg-header shadow-md">
     <h1 className="text-xl">Dichoptic Tetris</h1>
-    <div className="flex justify-between gap-2">
+    <nav aria-label="Site controls" className="flex justify-between gap-2">
       <Tutorial handleModalOpen={handleModalOpen} handleModalClose={handleModalClose} />
       <Settings handleModalOpen={handleModalOpen} handleModalClose={handleModalClose} />
       <ColorModeSwitch />
       <Github />
-    </div>
+    </nav>
   </header>
 }

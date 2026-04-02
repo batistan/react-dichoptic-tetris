@@ -23,7 +23,7 @@ export default function ColorModeSwitch() {
   const [theme, toggleTheme] = useDarkMode();
 
   return <div>
-    <button className="cursor-pointer" onClick={toggleTheme}>
+    <button className="cursor-pointer p-2" onClick={toggleTheme} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>
       <Icon isDark={theme === "dark"} />
     </button>
   </div>
