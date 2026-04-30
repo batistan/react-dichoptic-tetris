@@ -56,7 +56,7 @@ export default function Game({ inputDisabled }: { inputDisabled: boolean }) {
        `Level ${level}, Score ${gameState.score}`}
     </div>
     <div className="flex flex-col items-center">
-      <div className="flex md:hidden justify-between w-64 px-3 py-1 bg-info-bg rounded-t-md text-text-dark text-sm">
+      <div className="flex md:hidden justify-between w-64 px-3 py-1 bg-info-bg rounded-t-md text-text-dark text-sm tabular-nums">
         <span>Lv {level}</span>
         <span>Score: {gameState.score}</span>
       </div>

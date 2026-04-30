@@ -1,13 +1,34 @@
+import {useState} from "react";
 import HeaderPopup from "./HeaderPopup.tsx";
+
+const SEEN_INTRO_KEY = "seenIntro";
 
 export default function Tutorial(
   { handleModalOpen, handleModalClose }: { handleModalOpen: () => void, handleModalClose: () => void }
 ) {
+  const [shouldAutoOpen] = useState(() => {
+    try {
+      return !localStorage.getItem(SEEN_INTRO_KEY);
+    } catch {
+      return false;
+    }
+  });
+
+  function onClose() {
+    try {
+      localStorage.setItem(SEEN_INTRO_KEY, "true");
+    } catch {
+      // ignore storage failures (private mode, etc.)
+    }
+    handleModalClose();
+  }
+
   return <HeaderPopup
-    modalTitle="About"
+    modalTitle="How to play"
     handleModalOpen={handleModalOpen}
-    handleModalClose={handleModalClose}
+    handleModalClose={onClose}
     icon={<InfoIcon />}
+    defaultOpen={shouldAutoOpen}
   >
     <div className="flex flex-col gap-2 p-3 text-text">
       <p>

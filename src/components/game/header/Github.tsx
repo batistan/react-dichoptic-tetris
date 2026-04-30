@@ -4,8 +4,10 @@ export default function Github() {
        target="_blank"
        rel="noopener noreferrer"
        aria-label="View source on GitHub"
-       className="p-2 inline-block">
+       title="View source on GitHub"
+       className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-button-hover hover:text-button-hover-text transition-colors">
       <Icon />
+      <span className="hidden md:inline text-sm">GitHub</span>
     </a>
   </div>
 }
@@ -26,4 +28,3 @@ function Icon() {
     />
   </svg>
 }
-

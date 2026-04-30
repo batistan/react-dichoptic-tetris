@@ -19,7 +19,7 @@ export default function Modal({children, title, isOpen, handleClose}: ModalProps
   }
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !dialogRef.current?.open) {
       previousFocusRef.current = document.activeElement as HTMLElement;
       dialogRef.current?.showModal();
     }

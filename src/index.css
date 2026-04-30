@@ -1,6 +1,7 @@
 @font-face {
   font-family: "Futura";
-  src: url("./assets/fonts/futura/Futura Medium.otf") format("truetype");
+  src: url("./assets/fonts/futura/Futura Medium.otf") format("opentype");
+  font-display: swap;
 }
 
 :root {

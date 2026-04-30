@@ -21,10 +21,17 @@ function Icon({ isDark }: { isDark: boolean }) {
 
 export default function ColorModeSwitch() {
   const [theme, toggleTheme] = useDarkMode();
+  const targetLabel = theme === "dark" ? "Light mode" : "Dark mode";
 
   return <div>
-    <button className="cursor-pointer p-2" onClick={toggleTheme} aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}>
+    <button
+      className="cursor-pointer flex items-center gap-2 px-2 py-1 rounded-md hover:bg-button-hover hover:text-button-hover-text transition-colors"
+      onClick={toggleTheme}
+      aria-label={`Switch to ${targetLabel.toLowerCase()}`}
+      title={`Switch to ${targetLabel.toLowerCase()}`}
+    >
       <Icon isDark={theme === "dark"} />
+      <span className="hidden md:inline text-sm">{targetLabel}</span>
     </button>
   </div>
 }
