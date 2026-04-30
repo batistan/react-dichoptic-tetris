@@ -1,11 +1,8 @@
-@font-face {
-  font-family: "Futura";
-  src: url("./assets/fonts/futura/Futura Medium.otf") format("opentype");
-  font-display: swap;
-}
+@import "@fontsource-variable/jost/wght.css";
+@import "@fontsource-variable/jost/wght-italic.css";
 
 :root {
-  font-family: Futura, sans-serif;
+  font-family: "Jost Variable", Jost, "Avenir Next", Avenir, "Trebuchet MS", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
