@@ -6,6 +6,7 @@ React-based Tetris game designed for treating amblyopia (lazy eye) using dichopt
 
 ## Commands
 
+- `npm install` first — without `node_modules`, `npx jest` fetches a standalone Jest and fails with `Cannot find module '@babel/preset-env'`
 - `npm run dev` — Start Vite development server
 - `npm run build` — TypeScript check + Vite production build (`tsc -b && vite build`)
 - `npm run lint` — Run ESLint
@@ -17,26 +18,13 @@ React-based Tetris game designed for treating amblyopia (lazy eye) using dichopt
 
 ### Source Structure
 
-```
-src/
-├── main.tsx                    # Entry point (React StrictMode)
-├── index.css                   # CSS variables (light/dark themes)
-├── swatches.ts                 # Color swatch presets
-├── components/
-│   ├── App.tsx                 # Root component
-│   ├── SettingsContext.ts      # React Context for user settings
-│   ├── useDarkMode.ts          # Dark mode hook
-│   ├── color-selection/        # Color picker UI
-│   └── game/
-│       ├── Game.tsx            # Main game component (useReducer)
-│       ├── Board.tsx           # Board renderer
-│       ├── useControls.ts      # Keyboard/touch input hook
-│       ├── header/             # Header UI components
-│       └── logic/
-│           ├── Blocks.ts       # Tetromino shapes, rotation, random generator
-│           ├── Board.ts        # Board state, collision, line clearing
-│           └── GameState.ts    # Game reducer, scoring, actions
-```
+`src/components/game/logic/` — pure game mechanics:
+
+- `Blocks.ts` — tetromino shapes, rotation, random generator
+- `Board.ts` — board state, collision, line clearing
+- `GameState.ts` — game reducer, scoring, actions
+
+Everything else under `src/components/` is presentation; run `find src -type f` for the current layout.
 
 ### Key Design Decisions
 
@@ -65,7 +53,8 @@ Points per line clear × (level + 1): Single=40, Double=100, Triple=300, Tetris=
 
 ## Testing
 
-- **Framework**: Jest with ts-jest and Babel (config in `babel.config.cjs`)
+- **Framework**: Jest via `babel-jest` — no Jest config; `babel.config.cjs` is the transform. `ts-jest` is installed but unused
+- **Type-checking**: `npx jest` strips types without checking them; `npm run build` (`tsc -b`) type-checks `test/` via `tsconfig.test.json`. Run both after changing an export used by tests
 - **Location**: `test/` directory at project root
 - **Scope**: Unit tests for pure game logic (`Blocks.test.ts`, `Board.test.ts`); no React component tests
 - **Style**: `describe`/`test` blocks, direct assertions with `expect()`, no mocks needed for pure functions
